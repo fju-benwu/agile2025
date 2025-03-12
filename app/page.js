@@ -13,7 +13,7 @@ export default function Home() {
       <li>蔡政穎</li>
       <li>413085079李鎧任</li>
 
-    <ul>lingling  
+    <li>lingling</li>  
       <li><Link href="/test">Test</Link></li>
       <li><a href="http://www.im.fju.edu.tw">輔大資管</a></li>
     </ul>
