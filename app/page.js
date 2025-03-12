@@ -6,6 +6,7 @@ export default function Home() {
   <div className={styles.page}>
     <main className={styles.main}>
     <h1>FJU Go Go</h1>
+<<<<<<< HEAD
     <ul>
 <<<<<<< HEAD
       <li>吳玟慧</li>
@@ -15,6 +16,9 @@ export default function Home() {
       <li>蔡政穎</li>
       <li>413085079李鎧任</li>
 >>>>>>> e7c9811b9929e0bf9adcbf2ac6f0eb7e03c3cbbd
+=======
+    <ul>lingling  
+>>>>>>> 2ad4278 (lingling add)
       <li><Link href="/test">Test</Link></li>
       <li><a href="http://www.im.fju.edu.tw">輔大資管</a></li>
     </ul>
