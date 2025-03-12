@@ -7,6 +7,7 @@ export default function Home() {
     <main className={styles.main}>
     <h1>FJU Go Go</h1>
     <ul>
+      123
       <li><Link href="/test">Test</Link></li>
       <li><a href="http://www.im.fju.edu.tw">輔大資管</a></li>
     </ul>
