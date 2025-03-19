@@ -9,10 +9,10 @@ export default function Home() {
     <ul>
       <li>吳玟慧</li>
       <li>吳濟聰</li>
-      <li>美麗的黎小雅</li>
-       <li>吳濟聰</li>
-       <li>應統吳信霈</li>
-       <li>可愛的陳昭伶</li>
+      <li>黎小雅</li>
+      <li>吳濟聰</li>
+      <li>吳信霈</li>
+      <li>陳昭伶</li>
       <li>蔡政穎</li>
       <li>413085079李鎧任</li>
    
