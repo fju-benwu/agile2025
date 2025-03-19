@@ -9,7 +9,7 @@ export default function Home() {
     <ul>
       <li>吳玟慧</li>
       <li>吳濟聰</li>
-      <li>黎小雅</li>
+      <li><B>黎小雅</B></li>
       <li>吳濟聰</li>
       <li>吳信霈</li>
       <li>陳昭伶</li>
