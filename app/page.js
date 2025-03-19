@@ -8,7 +8,8 @@ export default function Home() {
     <h1>FJU Go Go</h1>
     <ul>
       <li>吳玟慧</li>
-      <li>吳濟聰</li>黎小雅
+      <li>吳濟聰</li>
+      <li>美麗的黎小雅</li>
        <li>吳濟聰</li>
        <li>應統吳信霈</li>
        <li>陳昭伶</li>
