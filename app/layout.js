@@ -18,7 +18,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="zh-TW">
+      <head>
+        <meta charSet="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>輔大資管碩士新生資訊系統</title>
+      </head>
+
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>

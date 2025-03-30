@@ -41,3 +41,119 @@ body {
   }
 }
 
+/* 複製FJUIM.html裡的style，有些定義會跟前面的定義衝突 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+}
+header {
+  background-color: #004080;
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+}
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.section {
+  background-color: white;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+h2 {
+  color: #004080;
+  border-bottom: 2px solid #004080;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+.course-table th, .course-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.course-table th {
+  background-color: #f0f0f0;
+}
+footer {
+  background-color: #004080;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+a {
+  color: #0066cc;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.select-container {
+display: flex;
+flex-direction: row;
+align-items: center;
+margin-left: 20px; /* 可选：增加一些左边距 */
+}
+.select-container select {
+padding: 5px 10px;
+font-size: 16px;
+border: 1px solid #004080;
+border-radius: 5px;
+background-color: #f4f4f4;
+color: #004080;
+margin-right: 10px; /* 增加右边距 */
+}
+
+
+.faculty-container {
+display: flex;
+flex-wrap: nowrap;
+overflow-x: auto;
+gap: 40px;
+}
+
+.faculty-member {
+text-align: center;
+width: 150px;
+flex: 0 0 auto;
+}
+
+.faculty-member img {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+object-fit: cover;
+transition: border 0.3s ease-in-out;
+}
+
+.faculty-member img:hover {
+border: 2px solid #004080;
+}
+
+/* 添加過渡效果 */
+.professor-details {
+display: none;
+opacity: 0;
+transform: translateY(-20px);
+transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.professor-details.show {
+display: block;
+opacity: 1;
+transform: translateY(0);
+}
