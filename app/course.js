@@ -26,17 +26,20 @@ export default function Course() {
         <div className={styles.main}>
           <h2>修業規則與必選修課程</h2>
           <table className="course-table">
+            <thead>
             <tr>
               <th>課程名稱</th>
               <th>授課教師</th>
             </tr>
-            
+            </thead>
+            <tbody>
             {courses.map((course, index) => (
             <tr key={index}>
               <td>{course.課程名稱}</td>
               <td>{course.教師.join("、")}</td>
             </tr>
           ))}
+            </tbody>
           </table>
         </div>
       </div>
