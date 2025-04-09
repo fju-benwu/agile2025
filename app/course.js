@@ -30,13 +30,15 @@ export default function Course() {
             <tr>
               <th>課程名稱</th>
               <th>授課教師</th>
+              <th>學分</th>
             </tr>
             </thead>
             <tbody>
             {courses.map((course, index) => (
             <tr key={index}>
               <td>{course.課程名稱}</td>
-              <td>{course.教師.join("、")}</td>
+              <td>{course.教師}</td>
+              <td>{course.學分}</td>
             </tr>
           ))}
             </tbody>
