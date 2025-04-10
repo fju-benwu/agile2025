@@ -34,9 +34,9 @@ export default function Course() {
     const courseQuery = query(courseCollection, where("學制", "==", studentType));
     const querySnapshot = await getDocs(courseQuery);
     // const querySnapshot = await getDocs(collection(db, ""));
-    courses = [];
+    setCourses([]); // Clear the courses array before fetching new data 
     querySnapshot.forEach((doc) => {
-      courses.push(doc.data());
+      setCourses((prevCourses) => [...prevCourses, doc.data()]); // Update the state with the new course data
     });
     console.log(courses);
   // Force a re-render by updating the state or triggering a UI update
