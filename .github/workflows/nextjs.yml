@@ -29,23 +29,9 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    env:
-      NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}} #repository secret
+    #env:
+      #NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}} #repository secret
     steps:
-      - name: Test if variable has value
-        run: |
-          echo "API key is: $TEST"
-          echo "API key length: ${#TEST}"
-          echo "API key is: $A"
-        env:
-          TEST: ${{ vars.TEST }}
-          A: "TEST"
-      - name: Test if secret has value
-        run: |
-          echo "API key is: $NEXT_PUBLIC_API_KEY"
-          echo "API key length: ${#NEXT_PUBLIC_API_KEY}"
-        env:
-          NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
       - name: Debug env value length
         run: |
           echo "API key length: ${#NEXT_PUBLIC_API_KEY}"
