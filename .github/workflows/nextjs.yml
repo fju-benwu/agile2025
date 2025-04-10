@@ -56,12 +56,12 @@ jobs:
           node-version: "20"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           # 必須上傳package-lock.json，否則會有問題
-      #- name: Make envfile
-        #uses: SpicyPizza/create-envfile@v2.0
-        #with:
-          #envkey_NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}}
-          #directory: './'
-          #file_name: '.env'
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}}
+          directory: './'
+          file_name: '.env'
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
