@@ -30,7 +30,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}}
+      NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}} #repository secret
     steps:
       - name: Test if variable has value
         run: |
