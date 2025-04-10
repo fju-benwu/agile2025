@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 //<body> is moved to layout.js
 export default function Course() {
   const db = getFirestore(app);
+  console.log("Firebase App Initialized:", db);
   let [courses, setCourses] = useState([]);
 
 
