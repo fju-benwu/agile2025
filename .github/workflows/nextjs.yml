@@ -62,6 +62,8 @@ jobs:
           envkey_NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}}
           directory: './'
           file_name: '.env'
+      - name: Show envfile
+        run: cat .env
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
