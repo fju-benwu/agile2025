@@ -2,39 +2,51 @@
 import styles from "./course.module.css";
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore"; 
 import app from "@/app/_firebase/Config";
-const db = getFirestore(app);
-const querySnapshot = await getDocs(collection(db, "系所課程"));
-// console.log("系所課程資料：");
-let courses = [];
-querySnapshot.forEach((doc) => {
-  // console.log(`${doc.id} => ${doc.data().課程名稱}`);
-  courses.push(doc.data());
-  // console.log(`${doc.id} => ${doc.data().教師.join("、")}`);
-
-});
-async function showStudentType(event) {
-  const studentType = event.target.value;
-  const courseCollection = collection(db, "系所課程");
-  const courseQuery = query(courseCollection, where("學制", "==", studentType));
-  const querySnapshot = await getDocs(courseQuery);
-  // const querySnapshot = await getDocs(collection(db, ""));
-  courses = [];
-  querySnapshot.forEach((doc) => {
-    courses.push(doc.data());
-  });
-  // Force a re-render by updating the state or triggering a UI update
-  document.querySelector(".course-table tbody").innerHTML = courses.map((course, index) => `
-    <tr key=${index}>
-      <td>${course.課程名稱}</td>
-      <td>${course.教師}</td>
-      <td>${course.學分}</td>
-    </tr>
-  `).join('');
-}
-
+import { useEffect, useState } from "react";
 
 //<body> is moved to layout.js
 export default function Course() {
+  const db = getFirestore(app);
+  let [courses, setCourses] = useState([]);
+
+
+  const getCourses = async () => {
+    setCourses([]); // Clear the courses array before fetching new data 
+    const querySnapshot = await getDocs(collection(db, "系所課程"));
+    // console.log("系所課程資料：");
+    querySnapshot.forEach((doc) => {
+      // console.log(`${doc.id} => ${doc.data().課程名稱}`);
+      setCourses((prevCourses) => [...prevCourses, doc.data()]); // Update the state with the new course data
+      // courses.push(doc.data());
+      // console.log(`${doc.id} => ${doc.data().教師.join("、")}`);
+
+    });
+  }
+  useEffect(() => {
+    getCourses(); // Fetch courses when the component mounts
+  }, []); // Empty dependency array to run only once on mount
+  // getCourses(); // Fetch courses when the component mounts
+  async function showStudentType(event) {
+    const studentType = event.target.value;
+    const courseCollection = collection(db, "系所課程");
+    const courseQuery = query(courseCollection, where("學制", "==", studentType));
+    const querySnapshot = await getDocs(courseQuery);
+    // const querySnapshot = await getDocs(collection(db, ""));
+    courses = [];
+    querySnapshot.forEach((doc) => {
+      courses.push(doc.data());
+    });
+    console.log(courses);
+  // Force a re-render by updating the state or triggering a UI update
+  // document.querySelector(".course-table tbody").innerHTML = courses.map((course, index) => `
+  //   <tr key=${index}>
+  //     <td>${course.課程名稱}</td>
+  //     <td>${course.教師}</td>
+  //     <td>${course.學分}</td>
+  //   </tr>
+  // `).join('');
+  }
+
   return (
   <>
     <header>
