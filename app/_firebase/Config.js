@@ -12,5 +12,6 @@ const firebaseConfig = {
 let firebase_app = getApps().length === 0 ? 
   initializeApp(firebaseConfig) 
   : getApps()[0];
+console.log(firebase_app.name); // "[DEFAULT]"
 // console.log("Firebase App Initialized:", firebaseConfig.apiKey); // For Firebase JS SDK v7.20.0 and later, `measurementId` is optional
 export default firebase_app;
