@@ -36,8 +36,10 @@ jobs:
         run: |
           echo "API key is: $TEST"
           echo "API key length: ${#TEST}"
+          echo "API key is: $A"
         env:
           TEST: ${{ vars.TEST }}
+          A: "TEST"
       - name: Test if secret has value
         run: |
           echo "API key is: $NEXT_PUBLIC_API_KEY"
