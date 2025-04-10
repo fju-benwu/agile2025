@@ -32,6 +32,12 @@ jobs:
     env:
       NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}}
     steps:
+      - name: Test if variable has value
+        run: |
+          echo "API key is: $TEST"
+          echo "API key length: ${#TEST}"
+        env:
+          TEST: ${{ vars.TEST }}
       - name: Test if secret has value
         run: |
           echo "API key is: $NEXT_PUBLIC_API_KEY"
