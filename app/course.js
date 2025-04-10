@@ -12,6 +12,7 @@ export default function Course() {
 
 
   const getCourses = async () => {
+    console.log("Fetching course data...");
     setCourses([]); // Clear the courses array before fetching new data 
     const querySnapshot = await getDocs(collection(db, "系所課程"));
     // console.log("系所課程資料：");
