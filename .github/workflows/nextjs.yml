@@ -23,7 +23,10 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: false
-
+env:
+  NEXT_PUBLIC_API_KEY: ${{secrets.NEXT_PUBLIC_API_KEY}}
+  
+  
 jobs:
   # Build job
   build:
