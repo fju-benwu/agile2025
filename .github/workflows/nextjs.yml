@@ -66,7 +66,6 @@ jobs:
           echo "NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }}" >> .env
           echo "NEXT_PUBLIC_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_AUTH_DOMAIN }}" >> .env
           echo "NEXT_PUBLIC_PROJECT_ID=${{ secrets.NEXT_PUBLIC_PROJECT_ID }}" >> .env
-          echo "TEST=${{ TEST }}" >> .env
       - name: Show envfile
         run: cat .env
       - name: Setup Pages
