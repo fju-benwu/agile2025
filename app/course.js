@@ -57,6 +57,7 @@ export default function Course() {
   }, [studentType, category, requiredType]); // 當學制、選別或選必修改變時重新篩選
 
   return (
+<<<<<<< HEAD
     <>
       <header>
         <h1>輔大資管碩士新生資訊系統</h1>
@@ -128,6 +129,23 @@ export default function Course() {
                 ))}
               </tbody>
             </table>
+=======
+  <>
+    <header>
+      <h1>輔大資管碩士新生資訊系統</h1>
+      <p>整合修業規則、課程資訊與師資介紹</p>
+    </header>
+    <div className="container">
+      {/* 修業規則與必選修課程 */}
+      <div className="section">
+        <div className={styles.main}>
+          <h2>修業規則與必選修課程</h2>
+          <div className="select-container">
+            <select id="studentTypeSelect" onChange={showStudentType}>
+              <option value="碩士">一般生</option>
+              <option value="碩職">在職專班</option>
+            </select>
+>>>>>>> 46792c0458f7c816420e98404971eefd2cacd7bb
           </div>
         </div>
       </div>
