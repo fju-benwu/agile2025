@@ -65,7 +65,7 @@ async function showStudentType(event) {
           <h2>修業規則與必選修課程</h2>
           <div className="select-container">
             <select id="studentTypeSelect" onChange={showStudentType}>
-              <option value="碩一">一般生</option>
+              <option value="碩士">一般生</option>
               <option value="碩職">在職專班</option>
             </select>
           </div>
