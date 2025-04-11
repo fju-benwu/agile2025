@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 //<body> is moved to layout.js
 export default function Course() {
-  const db = getFirestore(app);
+const db = getFirestore(app);
   console.log("Firebase App Initialized:", db);
   let [courses, setCourses] = useState([]);
 
@@ -14,30 +14,30 @@ export default function Course() {
   const getCourses = async () => {
     console.log("Fetching course data...");
     setCourses([]); // Clear the courses array before fetching new data 
-    const querySnapshot = await getDocs(collection(db, "系所課程"));
-    // console.log("系所課程資料：");
-    querySnapshot.forEach((doc) => {
-      // console.log(`${doc.id} => ${doc.data().課程名稱}`);
+const querySnapshot = await getDocs(collection(db, "系所課程"));
+// console.log("系所課程資料：");
+querySnapshot.forEach((doc) => {
+  // console.log(`${doc.id} => ${doc.data().課程名稱}`);
       setCourses((prevCourses) => [...prevCourses, doc.data()]); // Update the state with the new course data
       // courses.push(doc.data());
-      // console.log(`${doc.id} => ${doc.data().教師.join("、")}`);
-
-    });
+  // console.log(`${doc.id} => ${doc.data().教師.join("、")}`);
+ 
+});
   }
   useEffect(() => {
     getCourses(); // Fetch courses when the component mounts
   }, []); // Empty dependency array to run only once on mount
   // getCourses(); // Fetch courses when the component mounts
-  async function showStudentType(event) {
-    const studentType = event.target.value;
-    const courseCollection = collection(db, "系所課程");
-    const courseQuery = query(courseCollection, where("學制", "==", studentType));
-    const querySnapshot = await getDocs(courseQuery);
-    // const querySnapshot = await getDocs(collection(db, ""));
+async function showStudentType(event) {
+  const studentType = event.target.value;
+  const courseCollection = collection(db, "系所課程");
+  const courseQuery = query(courseCollection, where("學制", "==", studentType));
+  const querySnapshot = await getDocs(courseQuery);
+  // const querySnapshot = await getDocs(collection(db, ""));
     setCourses([]); // Clear the courses array before fetching new data 
-    querySnapshot.forEach((doc) => {
+  querySnapshot.forEach((doc) => {
       setCourses((prevCourses) => [...prevCourses, doc.data()]); // Update the state with the new course data
-    });
+  });
     console.log(courses);
   // Force a re-render by updating the state or triggering a UI update
   // document.querySelector(".course-table tbody").innerHTML = courses.map((course, index) => `
@@ -47,8 +47,11 @@ export default function Course() {
   //     <td>${course.學分}</td>
   //   </tr>
   // `).join('');
-  }
+}
 
+
+//<body> is moved to layout.js
+// export default function Course() {
   return (
   <>
     <header>
@@ -72,6 +75,7 @@ export default function Course() {
               <th>課程名稱</th>
               <th>授課教師</th>
               <th>學分</th>
+              <th>選別</th>
             </tr>
             </thead>
             <tbody>
@@ -80,6 +84,7 @@ export default function Course() {
               <td>{course.課程名稱}</td>
               <td>{course.教師}</td>
               <td>{course.學分}</td>
+              <td>{course.選別}</td>
             </tr>
           ))}
             </tbody>
