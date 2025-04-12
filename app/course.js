@@ -55,38 +55,34 @@ export default function Course() {
 
     fetchFilteredCourses();
   }, [studentType, category, requiredType]); // 當學制、選別或選必修改變時重新篩選
-// 定義教師頁面的路徑占位符
-const TEACHER_PATH = "教師/"; // TODO: 請驗證並更新為正確的教師介紹頁面路徑（參考網站結構，例如 "師資介紹"）
 
-// 渲染教師名稱和連結的輔助函數
-const renderTeachers = (teachers) => {
-  
-  if (Array.isArray(teachers)) {
-    return teachers.map((teacher, index) => (
-      <span key={index}>
-        <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teacher)}`}>
-          {teacher}
+  // 定義教師頁面的路徑占位符
+  const TEACHER_PATH = "教師/"; // TODO: 請驗證並更新為正確的教師介紹頁面路徑（參考網站結構，例如 "師資介紹"）
+
+  // 渲染教師名稱和連結的輔助函數
+  const renderTeachers = (teachers) => {
+    if (Array.isArray(teachers)) {
+      return teachers.map((teacher, index) => (
+        <span key={index}>
+          <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teacher)}`}>
+            {teacher}
+          </a>
+          {index < teachers.length - 1 && ", "} {/* 在最後一個教師名稱後不加逗號 */}
+        </span>
+      ));
+    } else {
+      return (
+        <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teachers)}`}>
+          {teachers}
         </a>
-        {index < teachers.length - 1 && "、"} {/* 在最後一個教師名稱後不加逗號 */}
-      </span>
-    ));
-  } else {
-    // 處理單一教師名稱的情況
-    return (
-      (teachers !== "???") ? (
-      <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teachers)}`}>
-      {teachers}
-      </a>)
-      :
-      teachers //如果是???則不顯示連結
-    );
-  }
-};
+      );
+    }
+  };
+
   return (
     <>
       <header>
         <h1>輔大資管碩士新生資訊系統</h1>
-        
         <p>整合修業規則、課程資訊與師資介紹</p>
       </header>
       <div className="container">
@@ -94,41 +90,39 @@ const renderTeachers = (teachers) => {
           <div className={styles.main}>
             <h2>修業規則與必選修課程</h2>
             <div className="select-container">
-  {/* 學制篩選下拉選單 */}
-  <select
-    id="studentTypeSelect"
-    onChange={(event) => setStudentType(event.target.value)}
-    style={{ display: "block", marginBottom: "10px" }}
-  >
-    <option value="">所有學制</option>
-    <option value="碩士">一般生</option>
-    <option value="碩職">在職專班</option>
-  </select>
+              {/* 學制篩選下拉選單 */}
+              <select
+                id="studentTypeSelect"
+                onChange={(event) => setStudentType(event.target.value)}
+              >
+                <option value="">所有學制</option>
+                <option value="碩士">一般生</option>
+                <option value="碩職">在職專班</option>
+              </select>
 
-  {/* 選別篩選下拉選單 */}
-  <div style={{ marginTop: "80px", marginLeft: "-115px" }}>
-    <select
-      id="categorySelect"
-      onChange={(event) => setCategory(event.target.value)}
-    >
-      <option value="不限">不限</option>
-      <option value="人工">人工</option>
-      <option value="電商">電商</option>
-    </select>
-  </div>
-
-  {/* 選必修篩選下拉選單 */}
-  <div style={{ marginTop: "80px" }}>
-    <select
-      id="requiredTypeSelect"
-      onChange={(event) => setRequiredType(event.target.value)}
-    >
-      <option value="">所有課程</option>
-      <option value="必修">必修</option>
-      <option value="選修">選修</option>
-    </select>
-  </div>
-</div>
+              {/* 選別篩選下拉選單 */}
+              <div style={{marginTop: "80px",marginLeft: "-115px"}}>
+              <select
+                id="categorySelect"
+                onChange={(event) => setCategory(event.target.value)}
+              >
+                <option value="不限">不限</option>
+                <option value="人工">人工</option>
+                <option value="電商">電商</option>
+              </select>
+              </div>
+              {/* 選必修篩選下拉選單 */}
+              <div style={{marginTop: "80px"}}>
+              <select
+                id="requiredTypeSelect"
+                onChange={(event) => setRequiredType(event.target.value)}
+              >
+                <option value="">所有課程</option>
+                <option value="必修">必修</option>
+                <option value="選修">選修</option>
+              </select>
+              </div>
+            </div>
             <table className="course-table">
               <thead>
                 <tr>
@@ -147,9 +141,7 @@ const renderTeachers = (teachers) => {
                     <td>{course.課程名稱}</td>
                     <td>{course.年級}</td>
                     <td>{course.學期}</td>
-                    <td>
-                    {renderTeachers(course.教師)}
-                    </td>
+                    <td>{renderTeachers(course.教師)}</td>
                     <td>{course.學分}</td>
                     <td>{course.選別}</td>
                     <td>{course.選必修}</td>
