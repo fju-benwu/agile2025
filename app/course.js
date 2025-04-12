@@ -55,7 +55,34 @@ export default function Course() {
 
     fetchFilteredCourses();
   }, [studentType, category, requiredType]); // 當學制、選別或選必修改變時重新篩選
+  
+  // 定義教師頁面的路徑占位符
+  const TEACHER_PATH = "教師/"; // TODO: 請驗證並更新為正確的教師介紹頁面路徑（參考網站結構，例如 "師資介紹"）
 
+  // 渲染教師名稱和連結的輔助函數
+  const renderTeachers = (teachers) => {
+    
+    if (Array.isArray(teachers)) {
+      return teachers.map((teacher, index) => (
+        <span key={index}>
+          <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teacher)}`}>
+            {teacher}
+          </a>
+          {index < teachers.length - 1 && "、"} {/* 在最後一個教師名稱後不加逗號 */}
+        </span>
+      ));
+    } else {
+      // 處理單一教師名稱的情況
+      return (
+        (teachers !== "???") ? (
+        <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teachers)}`}>
+        {teachers}
+        </a>)
+        :
+        teachers //如果是???則不顯示連結
+      );
+    }
+  };
   return (
     <>
       <header>
@@ -117,9 +144,7 @@ export default function Course() {
                     <td>{course.年級}</td>
                     <td>{course.學期}</td>
                     <td>
-                      <a href={"https://www.im.fju.edu.tw/" + course.教師}>
-                        {course.教師}
-                      </a>
+                    {renderTeachers(course.教師)}
                     </td>
                     <td>{course.學分}</td>
                     <td>{course.選別}</td>
