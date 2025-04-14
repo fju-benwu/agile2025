@@ -133,6 +133,8 @@ export default function Course() {
                   <th>學分</th>
                   <th>選別</th>
                   <th>選必修</th>
+                  <th>地點</th>
+                  <th>開課時間</th>
                 </tr>
               </thead>
               <tbody>
@@ -145,6 +147,8 @@ export default function Course() {
                     <td>{course.學分}</td>
                     <td>{course.選別}</td>
                     <td>{course.選必修}</td>
+                    <td>{course.地點}</td>
+                    <td>{course.開課時間}</td>
                   </tr>
                 ))}
               </tbody>
