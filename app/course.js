@@ -10,6 +10,7 @@ export default function Course() {
   const [studentType, setStudentType] = useState(""); // 學制篩選
   const [category, setCategory] = useState("不限"); // 選別篩選
   const [requiredType, setRequiredType] = useState(""); // 選必修篩選
+  const [schedule, setSchedule] = useState([]); // 課表資料
 
   // 初始載入所有課程
   useEffect(() => {
@@ -22,6 +23,26 @@ export default function Course() {
       setCourses(initialCourses);
     }
     fetchCourses();
+  }, []);
+  useEffect(() => {
+    async function fetchSchedule() {
+      const querySnapshot = await getDocs(collection(db, "課表"));
+      const scheduleData = [];
+  
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const { 開課星期, 開始節次, 結束節次, ...rest } = data;
+  
+        // 將資料展開到對應的節次和星期
+        for (let i = 開始節次; i <= 結束節次; i++) {
+          if (!scheduleData[i]) scheduleData[i] = {};
+          scheduleData[i][開課星期] = rest;
+        }
+      });
+  
+      setSchedule(scheduleData);
+    }
+    fetchSchedule();
   }, []);
 
   // 根據學制、選別和選必修篩選課程
@@ -153,9 +174,51 @@ export default function Course() {
                 ))}
               </tbody>
             </table>
+            <div className="section">
+  
+
+    {/* 新增課表 */}
+    <h2>課表</h2>
+    <table className="schedule-table" border="1" style={{ width: "100%", textAlign: "center" }}>
+      <thead>
+        <tr>
+          <th>節次</th>
+          {["星期一", "星期二", "星期三", "星期四", "星期五", "星期六"].map((day, index) => (
+            <th key={index}>{day}</th>
+          ))}
+        </tr>
+      </thead>
+      
+      <tbody>
+  {["1", "2", "3", "4", "午休", "5", "6", "7", "8-9", "E1-E3"].map((period, rowIndex) => (
+    <tr key={rowIndex}>
+      <td>{period}</td>
+      {["1", "2", "3", "4", "5", "6"].map((day, colIndex) => {
+        const rowData = schedule[rowIndex + 1]?.[day]; // 根據節次和星期獲取資料
+        return (
+          <td key={colIndex}>
+            {rowData ? (
+              <>
+                <div>課程代號：{rowData.課程代號}</div>
+                <div>課程名稱：{rowData.課程名稱}</div>
+                <div>教師：{rowData.教師}</div>
+                <div>地點：{rowData.地點}</div>
+              </>
+            ) : (
+              "無"
+            )}
+          </td>
+        );
+      })}
+    </tr>
+  ))}
+</tbody>
+    </table>
+  </div>
+</div>
           </div>
         </div>
-      </div>
+      
     </>
   );
 }
