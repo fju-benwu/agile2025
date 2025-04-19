@@ -13,37 +13,39 @@ export default function Course() {
   const [schedule, setSchedule] = useState([]); // 課表資料
 
   // 初始載入所有課程
-  useEffect(() => {
-    async function fetchCourses() {
-      const querySnapshot = await getDocs(collection(db, "系所課程"));
-      const initialCourses = [];
-      querySnapshot.forEach((doc) => {
-        initialCourses.push(doc.data());
-      });
-      setCourses(initialCourses);
-    }
-    fetchCourses();
-  }, []);
+
   useEffect(() => {
     async function fetchSchedule() {
-      const querySnapshot = await getDocs(collection(db, "課表"));
+      const querySnapshot = await getDocs(collection(db, "系所課程"));
       const scheduleData = [];
   
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const { 開課星期, 開始節次, 結束節次, ...rest } = data;
+        const { 開課星期, 開始節次, 結束節次, 學制, ...rest } = data;
+  
+        // 根據學制篩選
+        if (studentType && studentType !== 學制) {
+          return; // 如果學制不匹配，跳過這筆資料
+        }
   
         // 將資料展開到對應的節次和星期
         for (let i = 開始節次; i <= 結束節次; i++) {
           if (!scheduleData[i]) scheduleData[i] = {};
-          scheduleData[i][開課星期] = rest;
+          if (i === 開始節次) {
+            // 在開始節次標記 rowSpan
+            scheduleData[i][開課星期] = { ...rest, rowSpan: 結束節次 - 開始節次 + 1 };
+          } else {
+            // 其他節次設為 null，表示不渲染
+            scheduleData[i][開課星期] = null;
+          }
         }
       });
   
+      console.log(scheduleData); // 檢查資料是否正確
       setSchedule(scheduleData);
     }
     fetchSchedule();
-  }, []);
+  }, [studentType]); // 當學制改變時重新加載課表
 
   // 根據學制、選別和選必修篩選課程
   useEffect(() => {
@@ -179,6 +181,17 @@ export default function Course() {
 
     {/* 新增課表 */}
     <h2>課表</h2>
+    <div className="select-container" style={{ marginBottom: "20px" }}> {/* 增加 margin-bottom */}
+  {/* 學制篩選下拉選單 */}
+  <select
+    id="studentTypeSelect"
+    onChange={(event) => setStudentType(event.target.value)}
+  >
+    <option value="">所有學制</option>
+    <option value="碩士">碩士班</option>
+    <option value="碩職">碩職班</option>
+  </select>
+</div>
     <table className="schedule-table" border="1" style={{ width: "100%", textAlign: "center" }}>
       <thead>
         <tr>
@@ -193,22 +206,30 @@ export default function Course() {
   {["1", "2", "3", "4", "午休", "5", "6", "7", "8-9", "E1-E3"].map((period, rowIndex) => (
     <tr key={rowIndex}>
       <td>{period}</td>
-      {["1", "2", "3", "4", "5", "6"].map((day, colIndex) => {
+      {[1, 2, 3, 4, 5, 6].map((day, colIndex) => {
         const rowData = schedule[rowIndex + 1]?.[day]; // 根據節次和星期獲取資料
-        return (
-          <td key={colIndex}>
-            {rowData ? (
-              <>
-                <div>課程代號：{rowData.課程代號}</div>
-                <div>課程名稱：{rowData.課程名稱}</div>
-                <div>教師：{rowData.教師}</div>
-                <div>地點：{rowData.地點}</div>
-              </>
-            ) : (
-              "無"
-            )}
-          </td>
-        );
+
+        if (rowData) {
+          // 如果有 rowSpan，渲染單元格
+          if (rowData.rowSpan) {
+            return (
+              <td key={colIndex} rowSpan={rowData.rowSpan}>
+                <div>{rowData.課程代號}</div>
+                <div>{rowData.課程名稱}</div>
+                <div>{renderTeachers(rowData.教師)}</div>
+                <div>{rowData.地點}</div>
+              </td>
+            );
+          }
+        }
+
+        // 如果資料為 null，跳過渲染
+        if (rowData === null) {
+          return null;
+        }
+
+        // 如果沒有資料，顯示 "無"
+        return <td key={colIndex}></td>;
       })}
     </tr>
   ))}
