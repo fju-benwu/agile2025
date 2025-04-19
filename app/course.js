@@ -26,7 +26,7 @@ export default function Course() {
   }, []);
   useEffect(() => {
     async function fetchSchedule() {
-      const querySnapshot = await getDocs(collection(db, "課表"));
+      const querySnapshot = await getDocs(collection(db, "系所課程"));
       const scheduleData = [];
   
       querySnapshot.forEach((doc) => {
