@@ -1,12 +1,13 @@
 記得要新增.env.local
 檔案內容:
+```bash
 NEXT_PUBLIC_API_KEY=XXXXXXX
 NEXT_PUBLIC_AUTH_DOMAIN=XXXXXXX
 NEXT_PUBLIC_PROJECT_ID=XXXXXXX
 NEXT_PUBLIC_STORAGE_BUCKET=XXXXXXX
 NEXT_PUBLIC_MESSAGING_SENDER_ID=XXXXXXX
 NEXT_PUBLIC_APP_ID=XXXXXXX
-
+```
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
