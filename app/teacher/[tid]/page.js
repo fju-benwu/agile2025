@@ -1,14 +1,15 @@
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import app from "@/app/_firebase/Config";
-
-export const generateStaticParams = async () => {
-  // Replace with your actual dynamic parameters
+export async function generateStaticParams() {
+  // Example: Replace with your logic to fetch all possible `tid` values
   const db = getFirestore(app);
-  const teacherCollection = collection(db, '系所師資');
-  const snapshot = await getDocs(teacherCollection);
-  const params = snapshot.docs.map(doc => ({ tid: doc.id }));
+  const querySnapshot = await getDocs(collection(db, '系所教師'));
+  const params = [];
+  querySnapshot.forEach((doc) => {
+    params.push({ tid: doc.id });
+  });
   return params;
-};
+}
 
 export default async function Page({ params }) {
   const { tid } = await params;
