@@ -4,14 +4,15 @@
 import { useEffect, useState } from 'react';
 import { getFirestore, getDoc, doc, collection, query, where, getDocs } from 'firebase/firestore';
 import app from "@/app/_firebase/Config";
-
+// 將tname當成prop傳入
 // export default function Page({params}) {
-export default function Page() {
-
+export default function Page({ tName: initialTName }) {
   const [teacherData, setTeacherData] = useState(null);
-  const [tid, setTid] = useState('053792');
-  const [tName, setTName] = useState(null);
+  const [tid, setTid] = useState(null);
+  const [tName, setTName] = useState(initialTName);
   const db = getFirestore(app);
+  
+
   // async function getParams() {
   //   const { tid } = await params;
   //   setTid(tid); // 更新 tid 狀態
@@ -24,17 +25,17 @@ export default function Page() {
     async function fetchTeacherData() {
       try {
         // console.log("tid:",tid);
-        if (tid==tname) {
-          //如果tid是數字，則直接使用tid查詢
-          const querySnapshot = await getDoc(doc(db, '系所教師', tid));
-          if (querySnapshot.exists()) {
-            setTeacherData(querySnapshot.data());
-          } else {
-            console.log('No matching documents!');
-          }
-        }else{
+        // if (tid==tname) {
+        //   //如果tid是數字，則直接使用tid查詢
+        //   const querySnapshot = await getDoc(doc(db, '系所教師', tid));
+        //   if (querySnapshot.exists()) {
+        //     setTeacherData(querySnapshot.data());
+        //   } else {
+        //     console.log('No matching documents!');
+        //   }
+        // }else{
           //如果tid是名字，則直接使用名字查詢
-          const querySnapshot = await getDocs(query(collection(db, '系所教師'), where('姓名', '==', tname)));
+          const querySnapshot = await getDocs(query(collection(db, '系所教師'), where('姓名', '==', tName)));
           if (!querySnapshot.empty) {
             querySnapshot.forEach((doc) => {
               setTeacherData(doc.data());
@@ -42,7 +43,7 @@ export default function Page() {
           } else {
             console.log('No matching documents!');
           }
-        }
+        // }
       } catch (error) {
         console.error('Error fetching teacher data:', error);
       }
@@ -52,7 +53,7 @@ export default function Page() {
     // const tname = isNaN(Number(tid)) ? decodeURIComponent(tid) : tid;
 
     fetchTeacherData();
-  }, [tid]);
+  }, [tName]);
   
   return teacherData?
     <div>

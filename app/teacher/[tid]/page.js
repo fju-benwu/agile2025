@@ -1,5 +1,6 @@
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import app from "@/app/_firebase/Config";
+import Teacher from './teacher';
 export async function generateStaticParams() {
   // Example: Replace with your logic to fetch all possible `tid` values
   const db = getFirestore(app);
@@ -13,6 +14,8 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const { tid } = await params;
-  const tname = isNaN(Number(tid)) ? decodeURIComponent(tid) : tid;
-  return <div>tname: {tname}</div>;
+  const tName = isNaN(Number(tid)) ? decodeURIComponent(tid) : tid;
+  // 將 tname 傳給 teacher.js
+  return <Teacher tName={tName} />;
+  // return <div>tname: {tname}</div>;
 }
