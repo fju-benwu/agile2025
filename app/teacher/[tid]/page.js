@@ -6,7 +6,7 @@ export async function generateStaticParams() {
   const querySnapshot = await getDocs(collection(db, '系所教師'));
   const params = [];
   querySnapshot.forEach((doc) => {
-    params.push({ tid: doc.id });
+    params.push({ tid: doc.data().姓名 });
   });
   return params;
 }
