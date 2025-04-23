@@ -5,23 +5,25 @@ import { useEffect, useState } from 'react';
 import { getFirestore, getDoc, doc, collection, query, where, getDocs } from 'firebase/firestore';
 import app from "@/app/_firebase/Config";
 
-export default function Page({params}) {
+// export default function Page({params}) {
+export default function Page() {
+
   const [teacherData, setTeacherData] = useState(null);
   const [tid, setTid] = useState('053792');
   const [tName, setTName] = useState(null);
   const db = getFirestore(app);
-  async function getParams() {
-    const { tid } = await params;
-    setTid(tid); // 更新 tid 狀態
-    return tid; // 返回 tid 和 tname
-  }
-  setTid(getParams()); // 從路由參數中獲取tid和tname
+  // async function getParams() {
+  //   const { tid } = await params;
+  //   setTid(tid); // 更新 tid 狀態
+  //   return tid; // 返回 tid 和 tname
+  // }
+  // setTid(getParams()); // 從路由參數中獲取tid和tname
 
   useEffect(() => {
 
     async function fetchTeacherData() {
       try {
-        console.log("tid:",tid);
+        // console.log("tid:",tid);
         if (tid==tname) {
           //如果tid是數字，則直接使用tid查詢
           const querySnapshot = await getDoc(doc(db, '系所教師', tid));
@@ -47,7 +49,7 @@ export default function Page({params}) {
 
 
     }
-    const tname = isNaN(Number(tid)) ? decodeURIComponent(tid) : tid;
+    // const tname = isNaN(Number(tid)) ? decodeURIComponent(tid) : tid;
 
     fetchTeacherData();
   }, [tid]);
