@@ -3,7 +3,22 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getFirestore, getDoc, doc, collection, query, where, getDocs } from 'firebase/firestore';
 import app from "@/app/_firebase/Config";
+
+//新增generateStaticParams()解決
+//[Error: Page "/teacher/[tid]" is missing "generateStaticParams()" so it cannot be used with "output: export" config.]
+export async function generateStaticParams() {
+  // Example: Replace with your logic to fetch all possible `tid` values
+  const db = getFirestore(app);
+  const querySnapshot = await getDocs(collection(db, '系所教師'));
+  const params = [];
+  querySnapshot.forEach((doc) => {
+    params.push({ tid: doc.id });
+  });
+  return params;
+}
+
 export default function TeacherIntro() {
+
   const { tid } = useParams();// 使用 useParams() 取得路由參數
   //如果參數內容是數字，則儲存數字
   //如果參數內容不是數字，中文字會被加碼，使用RIComponent()解碼後，儲存老師姓名
