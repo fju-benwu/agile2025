@@ -1,11 +1,13 @@
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import app from "@/app/_firebase/Config";
 
 export async function generateStaticParams() {
   // Replace with your actual dynamic parameters
-  return [
-    { tid: '1' },
-    { tid: '2' },
-    { tid: 'example' },
-  ];
+  const db = getFirestore(app);
+  const teacherCollection = collection(db, '系所師資');
+  const snapshot = await getDocs(teacherCollection);
+  const params = snapshot.docs.map(doc => ({ tid: doc.id }));
+  return params;
 }
 
 export default async function Page({ params }) {
