@@ -3,14 +3,41 @@ import styles from "./course.module.css";
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore"; 
 import app from "@/app/_firebase/Config";
 import { useEffect, useState } from "react";
+import Link from "next/link"; // 引入 Link 元件
 
-export default function Course() {
+const renderTeachers = (teachers) => {
+  if (Array.isArray(teachers)) {
+    return teachers.map((teacher, index) => (
+      <span key={index}>
+        <Link href={`/teacher/${encodeURIComponent(teacher)}`}>
+          {teacher}
+        </Link>
+        {index < teachers.length - 1 && ", "} {/* 在最後一個教師名稱後不加逗號 */}
+      </span>
+    ));
+  } else {
+    return (
+      <Link href={`/teacher/${encodeURIComponent(teachers)}`}>
+        {teachers}
+      </Link>
+    );
+  }
+};
+
+
+export default function Course()
+ {
   const db = getFirestore(app);
   const [courses, setCourses] = useState([]);
   const [studentType, setStudentType] = useState(""); // 學制篩選
   const [category, setCategory] = useState("不限"); // 選別篩選
   const [requiredType, setRequiredType] = useState(""); // 選必修篩選
   const [schedule, setSchedule] = useState([]); // 課表資料
+  const [semester, setSemester] = useState(""); // 新增學期篩選狀態
+  const [scheduleStudentType, setScheduleStudentType] = useState(""); // 課表學制篩選
+  const [scheduleSemester, setScheduleSemester] = useState(""); // 課表學期篩選
+  
+
 
   // 初始載入所有課程
 
@@ -21,11 +48,16 @@ export default function Course() {
   
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const { 開課星期, 開始節次, 結束節次, 學制, ...rest } = data;
+        const { 開課星期, 開始節次, 結束節次, 學制, 學期, ...rest } = data;
   
-        // 根據學制篩選
-        if (studentType && studentType !== 學制) {
+        // 根據課表學制篩選
+        if (scheduleStudentType && scheduleStudentType !== 學制) {
           return; // 如果學制不匹配，跳過這筆資料
+        }
+  
+        // 根據課表學期篩選
+        if (scheduleSemester && scheduleSemester !== 學期) {
+          return; // 如果學期不匹配，跳過這筆資料
         }
   
         // 將資料展開到對應的節次和星期
@@ -44,8 +76,9 @@ export default function Course() {
       console.log(scheduleData); // 檢查資料是否正確
       setSchedule(scheduleData);
     }
+  
     fetchSchedule();
-  }, [studentType]); // 當學制改變時重新加載課表
+  }, [scheduleStudentType, scheduleSemester]); // 當課表學制或學期改變時重新加載課表
 
   // 根據學制、選別和選必修篩選課程
   useEffect(() => {
@@ -67,7 +100,10 @@ export default function Course() {
       if (requiredType) {
         courseQuery = query(courseQuery, where("選必修", "==", requiredType));
       }
-
+        // 如果有學期篩選條件
+    if (semester) {
+      courseQuery = query(courseQuery, where("學期", "==", semester));
+    }
       const querySnapshot = await getDocs(courseQuery);
       const filteredCourses = [];
       querySnapshot.forEach((doc) => {
@@ -87,17 +123,17 @@ export default function Course() {
     if (Array.isArray(teachers)) {
       return teachers.map((teacher, index) => (
         <span key={index}>
-          <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teacher)}`}>
+          <Link href={`/teacher/${encodeURIComponent(teacher)}`}>
             {teacher}
-          </a>
+          </Link>
           {index < teachers.length - 1 && ", "} {/* 在最後一個教師名稱後不加逗號 */}
         </span>
       ));
     } else {
       return (
-        <a href={`https://www.im.fju.edu.tw/${TEACHER_PATH}${encodeURIComponent(teachers)}`}>
+        <Link href={`/teacher/${encodeURIComponent(teachers)}`}>
           {teachers}
-        </a>
+        </Link>
       );
     }
   };
@@ -181,15 +217,25 @@ export default function Course() {
 
     {/* 新增課表 */}
     <h2>課表</h2>
-    <div className="select-container" style={{ marginBottom: "20px" }}> {/* 增加 margin-bottom */}
-  {/* 學制篩選下拉選單 */}
+    <div className="select-container" style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+  {/* 課表學制篩選下拉選單 */}
   <select
-    id="studentTypeSelect"
-    onChange={(event) => setStudentType(event.target.value)}
+    id="scheduleStudentTypeSelect"
+    onChange={(event) => setScheduleStudentType(event.target.value)}
   >
     <option value="">所有學制</option>
     <option value="碩士">碩士班</option>
     <option value="碩職">碩職班</option>
+  </select>
+
+  {/* 課表學期篩選下拉選單 */}
+  <select
+    id="scheduleSemesterSelect"
+    onChange={(event) => setScheduleSemester(event.target.value)}
+  >
+    <option value="">所有學期</option>
+    <option value="上">上學期</option>
+    <option value="下">下學期</option>
   </select>
 </div>
     <table className="schedule-table" border="1" style={{ width: "100%", textAlign: "center" }}>

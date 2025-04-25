@@ -13,9 +13,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }) {
-  const { tid } = await params;
-  const tName = isNaN(Number(tid)) ? decodeURIComponent(tid) : tid;
-  // 將 tname 傳給 teacher.js
+  const { tid } = params; // 從路由參數中獲取教師 ID
+  const tName = decodeURIComponent(tid);
   return <Teacher tName={tName} />;
-  // return <div>tname: {tname}</div>;
 }
