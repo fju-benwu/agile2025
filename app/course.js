@@ -140,10 +140,6 @@ export default function Course()
 
   return (
     <>
-      <header>
-        <h1>輔大資管碩士新生資訊系統</h1>
-        <p>整合修業規則、課程資訊與師資介紹</p>
-      </header>
       <div className="container">
         <div className="section">
           <div className={styles.main}>
