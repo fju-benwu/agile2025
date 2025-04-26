@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }) {
-  const { tid } = params; // 從路由參數中獲取教師 ID
+  const { tid } = await params; // 從路由參數中獲取教師 ID
   const tName = decodeURIComponent(tid);
   return <Teacher tName={tName} />;
 }
