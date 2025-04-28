@@ -130,41 +130,67 @@
         <p>整合修業規則、課程資訊與師資介紹</p>
     </header>
 
-<div class="container">
-    <!-- 修業規則與必選修課程 -->
-    <div class="section">
-        <div style="display: flex; align-items: center; gap: 10px;"> <!-- 加了 gap 讓間距漂亮一點 -->
-            <h2>修業規則與必選修課程</h2>
-            <div class="select-container">
-                <select id="studentTypeSelect" onchange="showStudentType()">
-                    <option value="regular">一般生</option>
-                    <option value="partTime">在職專班</option>
-                </select>
+    <div class="container">
+        <!-- 修業規則與必選修課程 -->
+        <div class="section">
+            <div style="display: flex; align-items: center;">
+                <h2>修業規則與必選修課程</h2>
+                <div class="select-container">
+                    <select id="studentTypeSelect" onchange="showStudentType()">
+                        <option value="regular">一般生</option>
+                        <option value="partTime">在職專班</option>
+                    </select>
+                </div>
             </div>
-
-            <!-- 把原本 regularCourses 的 select 也搬上來 -->
+            
+            <!-- 一般生課程 -->
+            <div id="regularCourses" style="display: block;"> 
             <div class="select-container">
                 <select id="programSelect" onchange="showPrograms()">
                     <option value="ecommerce">電子商務學群</option>
                     <option value="ai">人工智慧學群</option>
                 </select>
-            </div>
-
-            <div class="select-container">
                 <select id="courseTypeSelect" onchange="showCourseType()">
                     <option value="required">必修課程</option>
                     <option value="elective">選修課程</option>
                 </select>
             </div>
-        </div>
+<div style="display: flex; align-items: center; gap: 10px;">
+    <!-- 選修下拉選單 -->
+    <div class="select-container">
+        <select id="courseTypeSelect" onchange="showCourseType()">
+            <option value="required">必修課程</option>
+            <option value="elective">選修課程</option>
+        </select>
+    </div>
 
-        <!-- 如果 regularCourses 有其他內容可以另外放 -->
-        <div id="regularCourses" style="display: block;">
-            <!-- 這裡可以放課程清單或表格之類的 -->
-        </div>
+    <!-- 移動「所有學制」下拉式選單 -->
+    <div class="select-container">
+        <select id="studentTypeSelect" onchange="showStudentType()">
+            <option value="all">所有學制</option>
+            <option value="regular">一般生</option>
+            <option value="partTime">在職專班</option>
+        </select>
+    </div>
+
+    <!-- 移動「所有學期」下拉式選單 -->
+    <div class="select-container">
+        <select id="semesterSelect" onchange="showSemester()">
+            <option value="all">所有學期</option>
+            <option value="1">第一學期</option>
+            <option value="2">第二學期</option>
+        </select>
+    </div>
+
+    <!-- 新增「學期」下拉式選單 -->
+    <div class="select-container">
+        <select id="termSelect" onchange="showTerm()">
+            <option value="1">學期 1</option>
+            <option value="2">學期 2</option>
+            <option value="3">學期 3</option>
+        </select>
     </div>
 </div>
-
             <div id="ecommerceCourses">
                 <div id="ecommerceRequiredCourses">
                     <p>以下為電子商務學群必修課程與學分要求，詳細內容請參考 <a href="https://www.im.fju.edu.tw/%E7%A2%A9%E5%A3%AB%E7%8F%AD%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A/?utm_source=chatgpt.com" target="_blank">系所課程資訊頁面</a>。</p>
