@@ -34,16 +34,15 @@ export default function TeacherPage() {
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">教師列表</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="container">
+            <h1 className="heading">系所教師</h1>
+            <div className="grid">
                 {teachers.map((teacher) => (
-                    <Link href={`/teacher/${teacher.姓名}`} key={teacher.id}>
-                        <div className="border p-4 rounded shadow hover:shadow-lg transition cursor-pointer">
-                            <h2 className="text-xl font-semibold">{teacher.姓名}</h2>
-                            <p className="text-gray-600">{teacher.信箱}</p>
-                        </div>
-                    </Link>
+                    <div key={teacher.id} className="card">
+                        <Link href={`/teacher/${teacher.姓名}`} className="link">
+                        <h2 className="title">{teacher.姓名}</h2>
+                        <p className="text">{teacher.信箱}</p></Link>
+                    </div>
                 ))}
             </div>
         </div>
