@@ -36,6 +36,8 @@ export default function Course()
   const [semester, setSemester] = useState(""); // 新增學期篩選狀態
   const [scheduleStudentType, setScheduleStudentType] = useState(""); // 課表學制篩選
   const [scheduleSemester, setScheduleSemester] = useState(""); // 課表學期篩選
+  const [scheduleAcademicYear, setScheduleAcademicYear] = useState(""); // 學年度篩選
+
   
 
 
@@ -48,7 +50,7 @@ export default function Course()
   
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const { 開課星期, 開始節次, 結束節次, 學制, 學期, ...rest } = data;
+        const { 開課星期, 開始節次, 結束節次, 學制, 學期,學年度, ...rest } = data;
   
         // 根據課表學制篩選
         if (scheduleStudentType && scheduleStudentType !== 學制) {
@@ -58,6 +60,11 @@ export default function Course()
         // 根據課表學期篩選
         if (scheduleSemester && scheduleSemester !== 學期) {
           return; // 如果學期不匹配，跳過這筆資料
+        }
+
+        // 根據課表學年度篩選
+        if (scheduleAcademicYear && scheduleAcademicYear !== 學年度) {
+          return; // 如果學年度不匹配，跳過這筆資料
         }
   
         // 將資料展開到對應的節次和星期
@@ -78,7 +85,7 @@ export default function Course()
     }
   
     fetchSchedule();
-  }, [scheduleStudentType, scheduleSemester]); // 當課表學制或學期改變時重新加載課表
+  }, [scheduleStudentType, scheduleSemester, scheduleAcademicYear]); // 多加 scheduleAcademicYear
 
   // 根據學制、選別和選必修篩選課程
   useEffect(() => {
@@ -123,21 +130,20 @@ export default function Course()
     if (Array.isArray(teachers)) {
       return teachers.map((teacher, index) => (
         <span key={index}>
-          <Link href={`/teacher/${encodeURIComponent(teacher.trim())}`}>
-            {teacher.trim()}
+          <Link href={`/teacher/${encodeURIComponent(teacher)}`}>
+            {teacher}
           </Link>
           {index < teachers.length - 1 && ", "} {/* 在最後一個教師名稱後不加逗號 */}
         </span>
       ));
     } else {
       return (
-        <Link href={`/teacher/${encodeURIComponent(teachers.trim())}`}>
-          {teachers.trim()}
+        <Link href={`/teacher/${encodeURIComponent(teachers)}`}>
+          {teachers}
         </Link>
       );
     }
   };
-  
 
   return (
     <>
@@ -215,6 +221,16 @@ export default function Course()
     {/* 新增課表 */}
     <h2>課表</h2>
     <div className="select-container" style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+      {/* 課表學年度篩選下拉選單 */}
+<select
+  id="scheduleAcademicYearSelect"
+  onChange={(event) => setScheduleAcademicYear(event.target.value)}
+>
+  <option value="">所有學年度</option>
+  <option value="113">113學年度</option>
+  <option value="114">114學年度</option>
+</select>
+
   {/* 課表學制篩選下拉選單 */}
   <select
     id="scheduleStudentTypeSelect"
