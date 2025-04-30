@@ -63,7 +63,7 @@ export default function Course()
         }
 
         // 根據課表學年度篩選
-        if (scheduleAcademicYear && scheduleAcademicYear !== 開課學年) {
+        if (scheduleAcademicYear && scheduleAcademicYear != 開課學年) {
           return; // 如果學年度不匹配，跳過這筆資料
         }
   
