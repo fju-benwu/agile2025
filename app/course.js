@@ -130,20 +130,21 @@ export default function Course()
     if (Array.isArray(teachers)) {
       return teachers.map((teacher, index) => (
         <span key={index}>
-          <Link href={`/teacher/${encodeURIComponent(teacher)}`}>
-            {teacher}
+          <Link href={`/teacher/${encodeURIComponent(teacher.trim())}`}>
+            {teacher.trim()}
           </Link>
           {index < teachers.length - 1 && ", "} {/* 在最後一個教師名稱後不加逗號 */}
         </span>
       ));
     } else {
       return (
-        <Link href={`/teacher/${encodeURIComponent(teachers)}`}>
-          {teachers}
+        <Link href={`/teacher/${encodeURIComponent(teachers.trim())}`}>
+          {teachers.trim()}
         </Link>
       );
     }
   };
+  
 
   return (
     <>
