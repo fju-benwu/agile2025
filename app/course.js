@@ -50,7 +50,7 @@ export default function Course()
   
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const { 開課星期, 開始節次, 結束節次, 學制, 學期,學年度, ...rest } = data;
+        const { 開課星期, 開始節次, 結束節次, 學制, 學期,開課學年, ...rest } = data;
   
         // 根據課表學制篩選
         if (scheduleStudentType && scheduleStudentType !== 學制) {
@@ -63,7 +63,9 @@ export default function Course()
         }
 
         // 根據課表學年度篩選
-        if (scheduleAcademicYear && scheduleAcademicYear !== 學年度) {
+        if (scheduleAcademicYear && scheduleAcademicYear != 開課學年) {
+          console.log("開課學年變數:", scheduleAcademicYear)
+          console.log("開課學年資料庫:", 開課學年)
           return; // 如果學年度不匹配，跳過這筆資料
         }
   
