@@ -56,7 +56,7 @@ async function restoreSubcollectionFromFile(year, targetCollectionName, fileName
       const data = JSON.parse(fileContent);
       console.log(`成功讀取檔案 ${filePath}，共 ${data.length} 份文件`);
   
-      const newSubcollectionRef = collection(db, '系所課程', year, targetCollectionName);
+      const newSubcollectionRef = collection(db, '系所課程');
       const batch = writeBatch(db);
       data.forEach((item) => {
         const newDocRef = doc(newSubcollectionRef, item.id);
@@ -71,7 +71,6 @@ async function restoreSubcollectionFromFile(year, targetCollectionName, fileName
 
 // 使用範例
 // 從 Firestore 備份子集合到檔案(第三個參數是檔名)
-backupSubcollection('114', '114', '該年度課程');
-
+// backupSubcollection('114', '114', '114課程');
 // 從檔案復原到 Firestore (第三個參數是檔名)
-// restoreSubcollectionFromFile('114', '該年度課程', 'backup_1');
+ restoreSubcollectionFromFile('114','該年度課程','114課程');
