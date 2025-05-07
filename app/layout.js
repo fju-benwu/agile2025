@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
             <Link href="/" style={{ textDecoration: 'none', color: 'white' }}>
               課程資訊
             </Link>
-            <Link href="/about" style={{ textDecoration: 'none', color: 'white' }}>
+            <Link href="/intro" style={{ textDecoration: 'none', color: 'white' }}>
               系所介紹
             </Link>
             {/* 你可以根據需求添加其他的導覽連結 */}
