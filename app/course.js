@@ -218,7 +218,7 @@ useEffect(() => {
               </select>
 
               {/* 選別篩選下拉選單 */}
-              <div style={{marginTop: "80px",marginLeft: "-115px"}}>
+              <div style={{marginTop: "80px",marginLeft: "-236.5px"}}>
               <select
                 id="categorySelect"
                 onChange={(event) => setCategory(event.target.value)}
