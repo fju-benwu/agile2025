@@ -27,6 +27,7 @@ const renderTeachers = (teachers) => {
 
 export default function Course()
  {
+  const [academicYear, setAcademicYear] = useState(""); // 學年度篩選
   const db = getFirestore(app);
   const [courses, setCourses] = useState([]);
   const [studentType, setStudentType] = useState(""); // 學制篩選
@@ -86,7 +87,51 @@ export default function Course()
   
     fetchSchedule();
   }, [scheduleStudentType, scheduleSemester, scheduleAcademicYear]); // 多加 scheduleAcademicYear
+  /////////////////
 
+
+// Then update the useEffect hook for filtering courses
+useEffect(() => {
+  async function fetchFilteredCourses() {
+    let courseCollection = collection(db, "系所課程");
+    let courseQuery = query(courseCollection);
+
+    // 如果有學制篩選條件
+    if (studentType) {
+      courseQuery = query(courseQuery, where("學制", "==", studentType));
+    }
+
+    // 如果有選別篩選條件
+    if (category !== "不限") {
+      courseQuery = query(courseQuery, where("選別", "==", category));
+    }
+
+    // 如果有選必修篩選條件
+    if (requiredType) {
+      courseQuery = query(courseQuery, where("選必修", "==", requiredType));
+    }
+
+    // 如果有學期篩選條件
+    if (semester) {
+      courseQuery = query(courseQuery, where("學期", "==", semester));
+    }
+
+    // 如果有學年度篩選條件
+    if (academicYear) {
+      courseQuery = query(courseQuery, where("開課學年", "==", academicYear));
+    }
+
+    const querySnapshot = await getDocs(courseQuery);
+    const filteredCourses = [];
+    querySnapshot.forEach((doc) => {
+      filteredCourses.push(doc.data());
+    });
+    setCourses(filteredCourses);
+  }
+
+  fetchFilteredCourses();
+}, [studentType, category, requiredType, semester, academicYear]); // 加入 academicYear 到依賴陣列
+  ////////////////
   // 根據學制、選別和選必修篩選課程
   useEffect(() => {
     async function fetchFilteredCourses() {
@@ -161,6 +206,15 @@ export default function Course()
                 <option value="">所有學制</option>
                 <option value="碩士">一般生</option>
                 <option value="碩職">在職專班</option>
+              </select>
+              {/* 學年度篩選下拉選單 */}
+              <select
+                id="academicYearSelect"
+                onChange={(event) => setAcademicYear(event.target.value)}
+              >
+                <option value="">所有學年度</option>
+                <option value="113">113學年度</option>
+                <option value="114">114學年度</option>
               </select>
 
               {/* 選別篩選下拉選單 */}
