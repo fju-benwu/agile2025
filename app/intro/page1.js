@@ -6,8 +6,8 @@ export default function Page1() {
         <div>
             <h1>輔仁大學</h1>
             <p>資訊管理學系</p>
-            <div style={{ width: '80%', margin: 'auto'}}>
-                <Image 
+            <div >
+                <Image style={{ width: '80%', display:'block',  margin: 'auto'}} 
                     src="https://www.im.fju.edu.tw/wp-content/uploads/2024/03/19-1.jpg" 
                     alt="輔仁資管所圖片" 
                     width={800} // 設定圖片寬度
