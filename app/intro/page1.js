@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Page1() {
     return (
-        <div>
+        <div style={{ textAlign: 'center' }}>
             <h1>輔仁大學</h1>
             <p>資訊管理學系</p>
             <div >
