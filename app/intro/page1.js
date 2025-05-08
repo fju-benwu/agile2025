@@ -4,8 +4,8 @@ import Image from 'next/image';
 export default function Page1() {
     return (
         <div>
-            <h1>Welcome to Page 1</h1>
-            <p>This is the content of Page 1.</p>
+            <h1>輔仁大學</h1>
+            <p>資訊管理學系</p>
             <div style={{ width: '80%', margin: 'auto'}}>
                 <Image 
                     src="https://www.im.fju.edu.tw/wp-content/uploads/2024/03/19-1.jpg" 
