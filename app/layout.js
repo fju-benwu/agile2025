@@ -45,6 +45,7 @@ export default function RootLayout({ children }) {
         </header>
         <main style={{ padding: '20px' }}>{children}</main>
         <footer>
+          輔仁大學資訊管理學系
           {/* 頁尾內容 */}
         </footer>
       </body>

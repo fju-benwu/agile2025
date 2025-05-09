@@ -1,13 +1,20 @@
+import '../globals.css';
+import Image from 'next/image';
+
 export default function Page1() {
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold">Welcome to Page 1</h1>
-            <p className="mt-4">This is the content of Page 1.</p>
-            <img 
-                src="https://www.im.fju.edu.tw/wp-content/uploads/2024/03/19-1.jpg" 
-                alt="輔仁資管所圖片" 
-                className="mt-4 rounded shadow-lg"
-            />
-        </div>//
+        <div style={{ textAlign: 'center' }}>
+            <h1>輔仁大學</h1>
+            <p>資訊管理學系</p>
+            <div >
+                <Image style={{ width: '80%', display:'block',  margin: 'auto'}} 
+                    src="https://www.im.fju.edu.tw/wp-content/uploads/2024/03/19-1.jpg" 
+                    alt="輔仁資管所圖片"
+                    layout="intrinsic" // 維持圖片的原始長寬比 
+                    width={800} // 設定圖片寬度
+                    height={450} // 設定圖片高度，保持比例
+                />
+            </div>
+        </div>
     );
 }
