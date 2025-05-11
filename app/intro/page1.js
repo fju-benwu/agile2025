@@ -7,7 +7,8 @@ export default function Page() {
             <p>資訊管理學系</p>
             <div>
                 <img 
-                    style={{ width: '80%', margin: '20px auto', display: 'block' }} 
+                    width="80%"
+                    style={{ display: 'block', margin: 'auto' }} 
                     src="https://www.im.fju.edu.tw/wp-content/uploads/2024/03/19-1.jpg" 
                     alt="輔仁資管所圖片" 
                 />
@@ -15,3 +16,4 @@ export default function Page() {
         </div>
     );
 }
+
