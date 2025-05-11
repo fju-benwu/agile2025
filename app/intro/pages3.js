@@ -1,4 +1,13 @@
+import { useEffect } from "react";
+
 export default function Pages3() {
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://www.instagram.com/embed.js";
+        script.async = true;
+        document.body.appendChild(script);
+    }, []);
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold">Instagram Video</h1>
@@ -13,7 +22,7 @@ export default function Pages3() {
                         border: "0",
                         borderRadius: "3px",
                         boxShadow: "0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)",
-                        margin: "1px",
+                        margin: "1px auto",
                         maxWidth: "540px",
                         minWidth: "326px",
                         padding: "0",
@@ -38,8 +47,7 @@ export default function Pages3() {
                         </a>
                     </div>
                 </blockquote>
-                <script async src="//www.instagram.com/embed.js"></script>
             </div>
-        </div>//
+        </div>
     );
 }

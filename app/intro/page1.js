@@ -1,6 +1,6 @@
 import '../globals.css';
 
-export default function Page() {
+export default function Page1() {
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <h1>輔仁大學</h1>
