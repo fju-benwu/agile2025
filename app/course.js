@@ -128,7 +128,7 @@ export default function Course() {
             </select>
 
             <select  id="academicYearSelect" onChange={(e) => setAcademicYear(e.target.value)}>
-              <option value="">所有學年度</option>
+              <option value="">選擇學年度</option>
               <option value="113">113學年度</option>
               <option value="114">114學年度</option>
             </select>
