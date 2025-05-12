@@ -117,13 +117,17 @@ export default function Course() {
         <div className={styles.main}>
           <h2>修業規則與必選修課程</h2>
           <div className="select-container">
-            <select onChange={(e) => setStudentType(e.target.value)}>
+            <select onChange={(e) => {setStudentType(e.target.value);
+    if (e.target.value) {
+      setAcademicYear("113"); // 自動設置為 113 學年度
+      document.querySelector("#academicYearSelect").value = "113"; // 同步更新學年度選項
+    }}}>
               <option value="">所有學制</option>
               <option value="碩士">一般生</option>
               <option value="碩職">在職專班</option>
             </select>
 
-            <select onChange={(e) => setAcademicYear(e.target.value)}>
+            <select  id="academicYearSelect" onChange={(e) => setAcademicYear(e.target.value)}>
               <option value="">所有學年度</option>
               <option value="113">113學年度</option>
               <option value="114">114學年度</option>
@@ -187,7 +191,7 @@ export default function Course() {
                 <option value="114">114學年度</option>
               </select>
 
-              <select onChange={(e) => setScheduleStudentType(e.target.value)}>
+              <select onChange={(e) => setScheduleStudentType(e.target.value)} >
                 <option value="">所有學制</option>
                 <option value="碩士">碩士班</option>
                 <option value="碩職">碩職班</option>
