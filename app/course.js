@@ -37,7 +37,7 @@ export default function Course() {
   const [courses, setCourses] = useState([]);
 
   const [schedule, setSchedule] = useState([]);
-  const [scheduleAcademicYear, setScheduleAcademicYear] = useState("");
+  const [scheduleAcademicYear, setScheduleAcademicYear] = useState("113");
   const [scheduleStudentType, setScheduleStudentType] = useState("");
   const [scheduleSemester, setScheduleSemester] = useState("");
 
@@ -122,7 +122,7 @@ export default function Course() {
       setAcademicYear("113"); // 自動設置為 113 學年度
       document.querySelector("#academicYearSelect").value = "113"; // 同步更新學年度選項
     }}}>
-              <option value="">所有學制</option>
+              <option value="">選擇學制</option>
               <option value="碩士">一般生</option>
               <option value="碩職">在職專班</option>
             </select>
@@ -186,13 +186,13 @@ export default function Course() {
             <h2>課表</h2>
             <div className="select-container" style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
               <select onChange={(e) => setScheduleAcademicYear(e.target.value)}>
-                <option value="">所有學年度</option>
+                
                 <option value="113">113學年度</option>
                 <option value="114">114學年度</option>
               </select>
 
               <select onChange={(e) => setScheduleStudentType(e.target.value)} >
-                <option value="">所有學制</option>
+                <option value="">選擇學制</option>
                 <option value="碩士">碩士班</option>
                 <option value="碩職">碩職班</option>
               </select>
