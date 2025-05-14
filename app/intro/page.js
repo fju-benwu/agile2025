@@ -1,8 +1,11 @@
+"use client";
+import Carousel from "./Carousel";
+
 export default function Page() {
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold">Welcome to the Intro Page</h1>
-            <p className="mt-4">Hello</p>
+            <h1 className="text-2xl font-bold mb-6 text-center">系所介紹</h1>
+            <Carousel />
         </div>
     );
 }
