@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
             <Link href="/" style={{ textDecoration: 'none', color: 'white' }}>
               課程資訊
             </Link>
-            <Link href="/about" style={{ textDecoration: 'none', color: 'white' }}>
+            <Link href="/intro" style={{ textDecoration: 'none', color: 'white' }}>
               系所介紹
             </Link>
             {/* 你可以根據需求添加其他的導覽連結 */}
@@ -45,6 +45,7 @@ export default function RootLayout({ children }) {
         </header>
         <main style={{ padding: '20px' }}>{children}</main>
         <footer>
+          輔仁大學資訊管理學系
           {/* 頁尾內容 */}
         </footer>
       </body>

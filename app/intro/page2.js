@@ -1,3 +1,5 @@
+import Carousel from "./carousel";
+
 export default function Page2() {
     return (
         <div className="p-4 text-center">

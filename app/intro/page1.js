@@ -1,15 +1,19 @@
-// app/intro/page0.js（或 Page.js）
+import '../globals.css';
+
 export default function Page() {
     return (
-        <div className="container mx-auto p-4 flex flex-col items-center text-center min-h-screen justify-center">
-            <h1 className="text-2xl font-bold">Welcome to the Intro Page</h1>
-            <p className="mt-4">Hello</p>
-            <h2 className="text-xl font-semibold mt-6">歡迎來到輔仁資管所大家庭</h2>
-            <img 
-                src="https://megapx-assets.dcard.tw/images/9100421c-acb6-40a2-b714-6826d45759c9/1280.webp" 
-                alt="輔仁資管所大家庭" 
-                className="mt-4 rounded shadow-lg"
-            />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+            <h1>輔仁大學</h1>
+            <p>資訊管理學系</p>
+            <div>
+                <img 
+                    width="80%"
+                    style={{ display: 'block', margin: 'auto' }} 
+                    src="https://www.im.fju.edu.tw/wp-content/uploads/2024/03/19-1.jpg" 
+                    alt="輔仁資管所圖片" 
+                />
+            </div>
         </div>
     );
 }
+

@@ -1,48 +1,14 @@
-//輪播區塊
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-
 export default function Page() {
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-    };
-
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold">歡迎加入輔大資管系大家庭</h1>
+        <div className="container mx-auto p-4 flex flex-col items-center text-center min-h-screen justify-center">
+            <h1 className="text-2xl font-bold">Welcome to the Intro Page</h1>
             <p className="mt-4">Hello</p>
-            <div className="mt-8">
-                <Slider {...settings}>
-                    <div>
-                        <img
-                            src="/images/slide1.jpg"
-                            alt="Slide 1"
-                            className="w-full h-auto"
-                        />
-                    </div>
-                    <div>
-                        <img
-                            src="/images/slide2.jpg"
-                            alt="Slide 2"
-                            className="w-full h-auto"
-                        />
-                    </div>
-                    <div>
-                        <img
-                            src="/images/slide3.jpg"
-                            alt="Slide 3"
-                            className="w-full h-auto"
-                        />
-                    </div>
-                </Slider>
-            </div>
+            <h2 className="text-xl font-semibold mt-6">歡迎來到輔仁資管所大家庭</h2>
+            <img 
+                src="https://megapx-assets.dcard.tw/images/9100421c-acb6-40a2-b714-6826d45759c9/1280.webp" 
+                alt="輔仁資管所大家庭" 
+                className="mt-4 rounded shadow-lg"
+            />
         </div>
     );
 }
