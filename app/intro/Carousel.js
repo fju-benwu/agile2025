@@ -20,7 +20,7 @@ export default function CarouselComponent() {
                 <div><Page /></div>
                 <div><Page1 /></div>
                 <div><Page2 /></div>
-                <div><Pages3 /></div>
+                <div><Page3 /></div>
             </Carousel>
         </div>
     );
