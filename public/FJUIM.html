@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輔大資管碩士新生資訊系統</title>
+    
+    <style>
+        
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    header {
+        background-color: #004080;
+        color: white;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    .section {
+        background-color: white;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+        color: #004080;
+        border-bottom: 2px solid #004080;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+    .course-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+    }
+    .course-table th, .course-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .course-table th {
+        background-color: #f0f0f0;
+    }
+    footer {
+        background-color: #004080;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .select-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px; /* 可选：增加一些左边距 */
+}
+.select-container select {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #004080;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    color: #004080;
+    margin-right: 10px; /* 增加右边距 */
+}
+
+
+.faculty-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 40px;
+}
+
+.faculty-member {
+    text-align: center;
+    width: 150px;
+    flex: 0 0 auto;
+}
+
+.faculty-member img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: border 0.3s ease-in-out;
+}
+
+.faculty-member img:hover {
+    border: 2px solid #004080;
+}
+
+/* 添加過渡效果 */
+.professor-details {
+    display: none;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.professor-details.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>輔大資管碩士新生資訊系統</h1>
+        <p>整合修業規則、課程資訊與師資介紹</p>
+    </header>
+
+    <div class="container">
+        <!-- 修業規則與必選修課程 -->
+        <div class="section">
+            <div style="display: flex; align-items: center;">
+                <h2>修業規則與必選修課程</h2>
+                <div class="select-container">
+                    <select id="studentTypeSelect" onchange="showStudentType()">
+                        <option value="regular">一般生</option>
+                        <option value="partTime">在職專班</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 一般生課程 -->
+            <div id="regularCourses" style="display: block;"> 
+            <div class="select-container">
+                <select id="programSelect" onchange="showPrograms()">
+                    <option value="ecommerce">電子商務學群</option>
+                    <option value="ai">人工智慧學群</option>
+                </select>
+                <select id="courseTypeSelect" onchange="showCourseType()">
+                    <option value="required">必修課程</option>
+                    <option value="elective">選修課程</option>
+                </select>
+            </div>
+<div style="display: flex; align-items: center; gap: 10px;">
+    <!-- 選修下拉選單 -->
+    <div class="select-container">
+        <select id="courseTypeSelect" onchange="showCourseType()">
+            <option value="required">必修課程</option>
+            <option value="elective">選修課程</option>
+        </select>
+    </div>
+
+    <!-- 移動「所有學制」下拉式選單 -->
+    <div class="select-container">
+        <select id="studentTypeSelect" onchange="showStudentType()">
+            <option value="all">所有學制</option>
+            <option value="regular">一般生</option>
+            <option value="partTime">在職專班</option>
+        </select>
+    </div>
+
+    <!-- 移動「所有學期」下拉式選單 -->
+    <div class="select-container">
+        <select id="semesterSelect" onchange="showSemester()">
+            <option value="all">所有學期</option>
+            <option value="1">第一學期</option>
+            <option value="2">第二學期</option>
+        </select>
+    </div>
+
+    <!-- 新增「學期」下拉式選單 -->
+    <div class="select-container">
+        <select id="termSelect" onchange="showTerm()">
+            <option value="1">學期 1</option>
+            <option value="2">學期 2</option>
+            <option value="3">學期 3</option>
+        </select>
+    </div>
+</div>
+            <div id="ecommerceCourses">
+                <div id="ecommerceRequiredCourses">
+                    <p>以下為電子商務學群必修課程與學分要求，詳細內容請參考 <a href="https://www.im.fju.edu.tw/%E7%A2%A9%E5%A3%AB%E7%8F%AD%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A/?utm_source=chatgpt.com" target="_blank">系所課程資訊頁面</a>。</p>
+                    <table class="course-table">
+                        <tr>
+                            <th>全學群 必修課程名稱</th>
+                            <th>教師</th>
+                            <th>學分</th>
+                            <th>類型</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('高等資料庫(一上)'); return false;">高等資料庫(一上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E8%94%A1%E5%B9%B8%E8%93%81/" target="_blank">蔡幸蓁</a></td>                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('高等資訊管理(一上)'); return false;">高等資訊管理(一上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">林湘霖</a></td>
+                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('企業倫理(一下)'); return false;">企業倫理(一下)</a></td>
+                            <td>N/A</td>
+                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('資訊管理講座(二上)'); return false;">資訊管理講座(二上)</a></td>
+                            <td>N/A</td>
+                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('論文(二下)'); return false;">論文(二下)</a></td>
+                            <td>N/A</td>
+                            <td>6</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <th>電子商務 必修課程</th>
+                            <th>教師</th>
+                            <th>學分</th>
+                            <th>類型</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('電子商務總論(上)'); return false;">電子商務總論(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%e5%bb%96%e5%bb%ba%e7%bf%94/" target="_blank">廖建翔</a></td>
+                            <td>3</td>
+                            <td>電商學群必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('網路行銷專題(上)'); return false;">網路行銷專題(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">張銀益</a></td>
+                            <td>3</td>
+                            <td rowspan="5">5選3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('物聯網概論與應用(上)'); return false;">物聯網概論與應用(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E9%9D%92%E5%B3%B0/" target="_blank">林青峰</a></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('金融科技與金融行銷(下)'); return false;">金融科技與金融行銷(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">張銀益</a></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('研究方法(下)'); return false;">研究方法(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%e5%bb%96%e5%bb%ba%e7%bf%94/" target="_blank">廖建翔</a></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('電子採購與物流專題(下)'); return false;">電子採購與物流專題(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">張銀益</a></td>
+                            <td>2</td>
+                        </tr>
+                    </table>
+                    <p><em>註：一般生畢業條件為36學分(含論文)</em></p>
+                    <p><em>註：在職生畢業條件為30學分(含論文)</em></p>
+                </div>
+                <div id="ecommerceElectiveCourses" style="display:none;">
+                    <p>以下為電子商務學群選修課程與學分要求，詳細內容請參考 <a href="https://www.im.fju.edu.tw/%E7%A2%A9%E5%A3%AB%E7%8F%AD%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A/?utm_source=chatgpt.com" target="_blank">系所課程資訊頁面</a>。</p>
+                    <table class="course-table">
+                        <tr>
+                            <th>課程名稱</th>
+                            <th>教師</th>
+                            <th>學分</th>
+                            <th>類型</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('資訊系統專案管理(上)'); return false;">資訊系統專案管理(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E9%9B%85%E6%96%87/" target="_blank">林雅文</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('巨量資料探勘(上)'); return false;">巨量資料探勘(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E7%9F%B3%E4%BD%B3%E6%83%A0/" target="_blank">石佳惠</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('機器學習(上)'); return false;">機器學習(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%e5%91%82%e5%a5%87%e5%82%91/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('敏捷式軟體開發(上)'); return false;">敏捷式軟體開發(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E5%90%B3%E6%BF%9F%E8%81%B0/" target="_blank">吳濟聰</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('資訊安全(上)'); return false;">資訊安全(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E8%83%A1%E4%BF%8A%E4%B9%8B/" target="_blank">胡俊之</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('決策分析(上)'); return false;">決策分析(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">林湘霖</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('人工智慧產業實務(上)'); return false;">人工智慧產業實務(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E8%91%89%E6%89%BF%E9%81%94/" target="_blank">黃曜輝 1.5
+                                    葉承達 1.5</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('人工智慧(下)'); return false;">人工智慧(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%e5%91%82%e5%a5%87%e5%82%91/" target="_blank">呂奇傑 1.5
+                                鄭美娟 1.5</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('深度學習導論與應用(下)'); return false;">深度學習導論與應用(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%e5%91%82%e5%a5%87%e5%82%91/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('軟體工程(下)'); return false;">軟體工程(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%e5%91%82%e5%a5%87%e5%82%91/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('使用者經驗設計(下)'); return false;">使用者經驗設計(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E5%90%B3%E6%BF%9F%E8%81%B0/" target="_blank">吳濟聰</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('服務科學專題(下)'); return false;">服務科學專題(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E8%91%A3%E6%83%9F%E9%B3%B3/" target="_blank">董惟鳳</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('知識管理(下)'); return false;">知識管理(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E8%91%A3%E6%83%9F%E9%B3%B3/" target="_blank">董惟鳳</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('全球運籌與供應鏈(下)'); return false;">全球運籌與供應鏈(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">張銀益</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('倫理AI與AI倫理(下)'); return false;">倫理AI與AI倫理(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%e5%91%82%e5%a5%87%e5%82%91/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                    </table>
+                    <p><em>註：一般生畢業條件為36學分(含論文)</em></p>
+                    <p><em>註：在職生畢業條件為30學分(含論文)</em></p>
+                </div>
+            </div>
+
+            <div id="aiCourses" style="display:none;">
+                <div id="aiRequiredCourses">
+                    <p>以下為人工智慧學群必修課程與學分要求，詳細內容請參考 <a href="https://www.im.fju.edu.tw/%E7%A2%A9%E5%A3%AB%E7%8F%AD%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A/?utm_source=chatgpt.com" target="_blank">系所課程資訊頁面</a>。</p>
+                    <table class="course-table">
+                        <tr>
+                            <th>全學群 必修課程名稱</th>
+                            <th>教師</th>
+                            <th>學分</th>
+                            <th>類型</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('高等資料庫(一上)'); return false;">高等資料庫(一上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E8%94%A1%E5%B9%B8%E8%93%81/" target="_blank">蔡幸蓁</a></td>
+                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('高等資訊管理(一上)'); return false;">高等資訊管理(一上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">林湘霖</a></td>
+                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('企業倫理(一下)'); return false;">企業倫理(一下)</a></td>
+                            <td>N/A</td>
+                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('資訊管理講座(二上)'); return false;">資訊管理講座(二上)</a></td>
+                            <td>N/A</td>
+                            <td>3</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('論文(二下)'); return false;">論文(二下)</a></td>
+                            <td>N/A</td>
+                            <td>6</td>
+                            <td>必修</td>
+                        </tr>
+                        <tr>
+                            <th>課程名稱</th>
+                            <th>教師</th>
+                            <th>學分</th>
+                            <th>類型</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('巨量資料探勘(上)'); return false;">巨量資料探勘(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">石佳惠</a></td>
+                            <td>3</td>
+                            <td rowspan="5">5選3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('機器學習(上)'); return false;">機器學習(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('物聯網概論與應用(上)'); return false;">物聯網概論與應用(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">林青峰</a></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('人工智慧(下)'); return false;">人工智慧(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">呂奇傑 1.5 鄭美娟 1.5</a></td>
+                            <td>3</td> 
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('深度學習導論與應用(下)'); return false;">深度學習導論與應用(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+
+                        </tr>
+                    </table>
+                    <p><em>註：一般生畢業條件為36學分(含論文)</em></p>
+                    <p><em>註：在職生畢業條件為30學分(含論文)</em></p>
+                </div>
+                <div id="aiElectiveCourses" style="display:none;">
+                    <p>以下為人工智慧學群選修課程與學分要求，詳細內容請參考 <a href="https://www.im.fju.edu.tw/%E7%A2%A9%E5%A3%AB%E7%8F%AD%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A/?utm_source=chatgpt.com" target="_blank">系所課程資訊頁面</a>。</p>
+                    <table class="course-table">
+                        <tr>
+                            <th>課程名稱</th>
+                            <th>教師</th>
+                            <th>學分</th>
+                            <th>類型</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('資訊系統專案管理(上)'); return false;">資訊系統專案管理(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">林雅文</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('電子商務總論(上)'); return false;">電子商務總論(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">廖建翔</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('網路行銷專題(上)'); return false;">網路行銷專題(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">張銀益</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('敏捷式軟體開發(上)'); return false;">敏捷式軟體開發(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">吳濟聰</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('資訊安全(上)'); return false;">資訊安全(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">胡俊之</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('決策分析(上)'); return false;">決策分析(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">林湘霖</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('人工智慧產業實務(上)'); return false;">人工智慧產業實務(上)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">黃曜輝 1.5
+                                葉承達 1.5</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('金融科技與金融行銷(下)'); return false;">金融科技與金融行銷(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">張銀益</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('研究方法(下)'); return false;">研究方法(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">廖建翔</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('電子採購與物流專題(下)'); return false;">電子採購與物流專題(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">張銀益</a></td>
+                            <td>2</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('軟體工程(下)'); return false;">軟體工程(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('使用者經驗設計(下)'); return false;">使用者經驗設計(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">吳濟聰</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('知識管理(下)'); return false;">知識管理(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">董惟鳳</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('服務科學專題(下)'); return false;">服務科學專題(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">董惟鳳</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('全球運籌與供應鏈(下)'); return false;">全球運籌與供應鏈(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">張銀益</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                        <tr>
+                            <td><a href="#" onclick="openCourseDetails('倫理AI 與AI倫理(下)'); return false;">倫理AI 與AI倫理(下)</a></td>
+                            <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">呂奇傑</a></td>
+                            <td>3</td>
+                            <td>選修</td>
+                        </tr>  
+                    </table>
+                    <p><em>註：一般生畢業條件為36學分(含論文)</em></p>
+                    <p><em>註：在職生畢業條件為30學分(含論文)</em></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 在職專班課程 -->
+<div id="partTimeCourses" style="display: none;">
+    <div class="select-container">
+        <select id="partTimeCourseTypeSelect" onchange="showPartTimeCourses()">
+            <option value="required">必修課程</option>
+            <option value="elective">選修課程</option>
+        </select>
+    </div>
+    <div id="partTimeRequiredCourses">
+        <p>以下為在職專班必修課程：</p>
+        <table class="course-table">
+            <tr>
+                <th>課程名稱</th>
+                <th>教師</th>
+                <th>學分</th>
+                <th>類型</th>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails(整合管理(一上)); return false;">整合管理(一上)</a></td>
+                <td>N/A</td>
+                <td>3</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails(管理資訊系統(一上)); return false;">管理資訊系統(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">邱瑞科 張銀益</a></td>
+                <td>3</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails(研究方法(一下)); return false;">研究方法(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E9%BB%83%E6%99%BA%E6%A6%AE/" target="_blank">黃智榮</a></td>
+                <td>3</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails(人工智慧與分析(一下)); return false;">人工智慧與分析(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E7%9F%B3%E4%BD%B3%E6%83%A0/" target="_blank">石佳惠</a></td>
+                <td>3</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails(電子商務總論(二上)); return false;">電子商務總論(二上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%e5%bb%96%e5%bb%ba%e7%bf%94/" target="_blank">廖建翔</a></td>
+                <td>3</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails(論文(二下)); return false;">論文(二下)</a></td>
+                <td>N/A</a></td>
+                <td>6</td>
+                <td>必修</td>
+            </tr>
+        </table>
+    </div>
+    <div id="partTimeElectiveCourses" style="display: none;">
+        <p>以下為在職專班選修課程：</p>
+        <table class="course-table">
+            <tr>
+                <th>課程名稱</th>
+                <th>教師</th>
+                <th>學分</th>
+                <th>類型</th>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('資訊安全(一上)'); return false;">資訊安全(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E8%83%A1%E4%BF%8A%E4%B9%8B/" target="_blank">胡俊之</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('使用者經驗設計(一上)'); return false;">使用者經驗設計(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E5%90%B3%E6%BF%9F%E8%81%B0/" target="_blank">吳濟聰</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('決策分析(一上)'); return false;">決策分析(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">林湘霖</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('企業永續資訊策略(一上)'); return false;">使用者經驗設計(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E9%84%AD%E7%BE%8E%E5%A8%9F/" target="_blank">鄭美娟 林雅文</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('機器學習(一上)'); return false;">機器學習(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%e5%91%82%e5%a5%87%e5%82%91/" target="_blank">呂奇傑</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('數位金融與區塊鏈(一上)'); return false;">數位金融與區塊鏈(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">張銀益</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('醫療健康大數據分析與應用(一上)'); return false;">醫療健康大數據分析與應用(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E9%9B%85%E6%96%87/" target="_blank">林雅文</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('企業程序再造(一上)'); return false;">企業程序再造(一上)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E9%BB%83%E6%99%BA%E6%A6%AE/" target="_blank">黃智榮</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="openCourseDetails('資訊系統專案管理(一下)'); return false;">資訊系統專案管理(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E6%9E%97%E9%9B%85%E6%96%87/" target="_blank">林雅文</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr><tr>
+                <td><a href="#" onclick="openCourseDetails('服務科學專題(一下)'); return false;">服務科學專題(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E8%91%A3%E6%83%9F%E9%B3%B3/" target="_blank">董惟鳳</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr><tr>
+                <td><a href="#" onclick="openCourseDetails('深度學習導論與應用(一下)'); return false;">深度學習導論與應用(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%e5%91%82%e5%a5%87%e5%82%91/" target="_blank">呂奇傑</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr><tr>
+                <td><a href="#" onclick="openCourseDetails('敏捷式軟體開發(一下)'); return false;">敏捷式軟體開發(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E5%90%B3%E6%BF%9F%E8%81%B0/" target="_blank">吳濟聰</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr><tr>
+                <td><a href="#" onclick="openCourseDetails('國際產業分析(一下)'); return false;">國際產業分析(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">N/A</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr><tr>
+                <td><a href="#" onclick="openCourseDetails('國際專業參訪(一下)'); return false;">國際專業參訪(一下)</a></td>
+                <td><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">N/A</a></td>
+                <td>3</td>
+                <td>選修</td>
+            </tr>
+        </table>
+    </div>
+</div>
+        <!-- 課表與開課資訊 -->
+        <!-- 課表與開課資訊 -->
+<div class="section">
+    <h2>課表與開課資訊</h2>
+    <select id="courseSelect" onchange="showCourses()">
+        <option value="required">必修課程</option>
+        <option value="elective">選修課程</option>
+    </select>
+    <div id="requiredCourses">
+        <p>查看最新課程時間表與開課資訊，請參考 <a href="https://www.im.fju.edu.tw/%E7%A2%A9%E5%A3%AB%E7%8F%AD%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A/?utm_source=chatgpt.com" target="_blank">輔大第二學期開課資料查詢系統</a>。</p>
+        <table class="course-table">
+            <tr>
+                <th>課程名稱</th>
+                <th>授課教師</th>
+                <th>時間</th>
+                <th>地點</th>
+            </tr>
+            <tr>
+                <td>人工智慧應用</td>
+                <td>張教授</td>
+                <td>週一 13:00-16:00</td>
+                <td>資管大樓301</td>
+            </tr>
+            <tr>
+                <td>大數據分析</td>
+                <td>李教授</td>
+                <td>週三 09:00-12:00</td>
+                <td>資管大樓402</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="electiveCourses" style="display:none;">
+        <p>查看最新課程時間表與開課資訊，請參考 <a href="https://www.im.fju.edu.tw/%E7%A2%A9%E5%A3%AB%E7%8F%AD%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A/?utm_source=chatgpt.com" target="_blank">輔大第二學期開課資料查詢系統</a>。</p>
+        <table class="course-table">
+            <tr>
+                <th>課程名稱</th>
+                <th>授課教師</th>
+                <th>時間</th>
+                <th>地點</th>
+            </tr>
+            <tr>
+                <td>網路安全</td>
+                <td>王教授</td>
+                <td>週二 10:00-12:00</td>
+                <td>資管大樓201</td>
+            </tr>
+            <tr>
+                <td>雲端運算</td>
+                <td>陳教授</td>
+                <td>週四 14:00-16:00</td>
+                <td>資管大樓202</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+        <!-- 課程大綱 -->
+        <div class="section">
+            <h2>課程大綱</h2>
+            <p>每門課程的詳細目標、內容與評分標準，請查詢 <a href="https://www.im.fju.edu.tw/%e5%b0%88%e4%bb%bb%e6%95%99%e5%b8%ab/" target="_blank">輔大課程大綱系統</a>。</p>
+            <p>範例：人工智慧應用 - 課程目標：了解AI基礎理論與實務應用，包含機器學習與深度學習技術。</p>
+        </div>
+
+        
+  <!-- 師資介紹 -->
+<div class="section">
+    <h2>師資介紹</h2>
+    <div class="select-container">
+        <select id="facultySelect" onchange="showFaculty()">
+            <option value="ecommerce">電子商務學群</option>
+            <option value="ai">人工智慧學群</option>
+        </select>
+    </div>
+
+    <div id="ecommerceFaculty">
+        <p>完整教師資訊請見 <a href="https://www.im.fju.edu.tw/%e5%b0%88%e4%bb%bb%e6%95%99%e5%b8%ab/" target="_blank">資管系專任教師頁面</a>。以下為簡介：</p>
+        <div class="faculty-container">
+            <div class="faculty-member" onclick="toggleProfessor('dong1')">
+                <img src="http://sem.fju.edu.tw/wp-content/uploads/2017/04/%E8%91%A3%E6%83%9F%E9%B3%B3.jpg" alt="董教授">
+                <p><strong>董惟鳳 教授</strong> - 專長：服務科學、設計思考、用戶體驗、機器人應用</p>
+                <p><a href="https://www.im.fju.edu.tw/%E8%91%A3%E6%83%9F%E9%B3%B3/" target="_blank">詳細資訊</a></p>
+            </div>
+            <div class="faculty-member" onclick="toggleProfessor('dong2')">
+                <img src="https://tse1.mm.bing.net/th?id=OIP.uhSMFpqd3z89ptDPQrrlpgAAAA&pid=Api&P=0&h=180" alt="廖教授">
+                <p><strong>廖建翔 教授</strong> - 專長：社會網絡、資訊計量學、電子商務、網路服務</p>
+                <p><a href="https://www.im.fju.edu.tw/%e5%bb%96%e5%bb%ba%e7%bf%94/" target="_blank">詳細資訊</a></p>
+            </div>
+            <div class="faculty-member" onclick="toggleProfessor('dong3')">
+                <img src="https://i.ytimg.com/vi/paSc_sZf2vs/maxresdefault.jpg" alt="許教授">
+                <p><strong>許嘉霖 教授</strong> - 專長：電子商務、網路行銷、遊戲化行銷、服務業行銷、消費者心理與行為</p>
+                <p><a href="https://www.im.fju.edu.tw/%E8%A8%B1%E5%98%89%E9%9C%96/" target="_blank">詳細資訊</a></p>
+            </div>
+            <div class="faculty-member" onclick="toggleProfessor('dong4')">
+                <img src="https://img.51miz.com/preview/element/00/01/12/75/E-1127590-2FA28D01.jpg" alt="張教授">
+                <p><strong>張銀益 副教授</strong> - 專長：商業自動化、電子採購與物流運籌、電子商務與行動商務、行動通訊與網路管理</p>
+                <p><a href="https://www.im.fju.edu.tw/%E5%BC%B5%E9%8A%80%E7%9B%8A/" target="_blank">詳細資訊</a></p>
+            </div>
+            <div class="faculty-member" onclick="toggleProfessor('dong5')">
+                <img src="https://pic.616pic.com/ys_bnew_img/00/17/43/7AbkKVePJE.jpg" alt="林教授">
+                <p><strong>林湘霖 助理教授</strong> - 專長：決策科學、資料探勘、多變量分析、企業資源規劃、消費者行為、數位學習、區塊鏈應用</p>
+                <p><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">詳細資訊</a></p>
+            </div>
+            <div class="faculty-member" onclick="toggleProfessor('dong6')">
+                <img src="https://pic6.sucaisucai.com/13/84/13084096_2.jpg" alt="黃教授">
+                <p><strong>黃智榮 助理教授</strong> - 專長：資訊管理、追溯系统、在線反饋信息、社交媒體、消費者行為</p>
+                <p><a href="https://www.im.fju.edu.tw/%E9%BB%83%E6%99%BA%E6%A6%AE/" target="_blank">詳細資訊</a></p>
+            </div>
+          
+            <!-- 可以繼續添加更多的老師欄位 -->
+        </div>
+        <div id="dong1" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+        </div>
+        <div id="dong2" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        <div id="dong3" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        <div id="dong4" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        <div id="dong5" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        <div id="dong6" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        
+    </div>
+
+    <div id="aiFaculty" style="display:none;">
+        <p>完整教師資訊請見 <a href="https://www.im.fju.edu.tw/%e5%b0%88%e4%bb%bb%e6%95%99%e5%b8%ab/" target="_blank">資管系專任教師頁面</a>。以下為簡介：</p>
+        <div class="faculty-container">
+            <div class="faculty-member" onclick="toggleProfessor('ai1')">
+                <img src="https://www.bbm.fju.edu.tw/uploads/pictures/6734b9be00277.jpg" alt="葉教授">
+                <p><strong>葉承達 教授</strong> - 專長：網路可靠度分析、元啟發式演算法、系統最佳化、服務品質分析</p>
+                <p><a href="https://www.im.fju.edu.tw/%E8%91%89%E6%89%BF%E9%81%94/" target="_blank">詳細資訊</a></p>
+            </div>
+            <div class="faculty-member" onclick="toggleProfessor('ai2')">
+                <img src="https://as1.ftcdn.net/v2/jpg/06/15/44/70/1000_F_615447011_GOGWROsPNgamAzolXBW28iKX3AAXKqMP.jpg" alt="黃教授">
+                <p><strong>黃曜輝 教授</strong> - 專長：決策支援方法</p>
+                <p><a href="https://www.im.fju.edu.tw/%E9%BB%83%E6%9B%9C%E8%BC%9D/" target="_blank">詳細資訊</a></p>
+            </div>
+            <div class="faculty-member" onclick="toggleProfessor('ai3')">
+                <img src="https://png.pngtree.com/png-clipart/20190612/original/pngtree-old-cartoon-professor-png-image_3409153.jpg" alt="林教授">
+                <p><strong>林青峰 教授</strong> - 專長：情感分析、機器學習、巨量資料分析、資料挖掘及知識萃取技術、程式開發與專案管理</p>
+                <p><a href="https://www.im.fju.edu.tw/%E6%9E%97%E9%9D%92%E5%B3%B0/" target="_blank">詳細資訊</a></p>
+            </div>
+            
+            <div class="faculty-member" onclick="toggleProfessor('ai4')">
+                <img src="https://pic.616pic.com/ys_bnew_img/00/17/43/7AbkKVePJE.jpg" alt="林教授">
+                <p><strong>林湘霖 助理教授</strong> - 專長：決策科學、資料探勘、多變量分析、企業資源規劃、消費者行為、數位學習、區塊鏈應用</p>
+                <p><a href="https://www.im.fju.edu.tw/%E6%9E%97%E6%B9%98%E9%9C%96/" target="_blank">詳細資訊</a></p>
+            </div>
+            
+            <!-- 可以繼續添加更多的老師欄位 -->
+        </div>
+        <div id="ai1" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+        </div>
+        <div id="ai2" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        <div id="ai3" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        <div id="ai4" class="professor-details">
+            <h3>已畢業研究生</h3>
+            <ul>
+                <li>王小明 - 論文題目：電子商務平台的研究</li>
+                <li>李小華 - 論文題目：供應鏈管理的最佳實踐</li>
+            </ul>
+            <h3>現有研究生</h3>
+            <ul>
+                <li>陳大文 - 研究方向：網路行銷策略</li>
+                <li>林小美 - 研究方向：物流管理系統</li>
+            </ul>
+            <h3>指導學生論文</h3>
+            <ul>
+                <li>張教授 - 指導論文數：10篇</li>
+                <li>李教授 - 指導論文數：8篇</li>
+            </ul>
+            <!-- 老師的詳細內容 -->
+        </div>
+        
+        </div>
+    </div>
+</div>
+</div><!-- 遺漏的閉合標籤 -->
+<div id="courseModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
+    <div id="courseModalContent"></div>
+    <button onclick="closeCourseModal()">關閉</button>
+</div>
+
+    <footer>
+        <p>© 2025 輔仁大學資訊管理學系碩士班。聯絡我們：im@fju.edu.tw</p>
+    </footer>
+
+    <script>
+        function showPrograms() {
+            var select = document.getElementById("programSelect");
+            var ecommerceCourses = document.getElementById("ecommerceCourses");
+            var aiCourses = document.getElementById("aiCourses");
+        
+            if (select.value === "ecommerce") {
+                ecommerceCourses.style.display = "block";
+                aiCourses.style.display = "none";
+            } else {
+                ecommerceCourses.style.display = "none";
+                aiCourses.style.display = "block";
+            }
+        }
+        
+        function showCourseType() {
+            var programSelect = document.getElementById("programSelect").value;
+            var courseTypeSelect = document.getElementById("courseTypeSelect").value;
+        
+            var ecommerceRequiredCourses = document.getElementById("ecommerceRequiredCourses");
+            var ecommerceElectiveCourses = document.getElementById("ecommerceElectiveCourses");
+            var aiRequiredCourses = document.getElementById("aiRequiredCourses");
+            var aiElectiveCourses = document.getElementById("aiElectiveCourses");
+        
+            if (programSelect === "ecommerce") {
+                if (courseTypeSelect === "required") {
+                    ecommerceRequiredCourses.style.display = "block";
+                    ecommerceElectiveCourses.style.display = "none";
+                } else {
+                    ecommerceRequiredCourses.style.display = "none";
+                    ecommerceElectiveCourses.style.display = "block";
+                }
+            } else {
+                if (courseTypeSelect === "required") {
+                    aiRequiredCourses.style.display = "block";
+                    aiElectiveCourses.style.display = "none";
+                } else {
+                    aiRequiredCourses.style.display = "none";
+                    aiElectiveCourses.style.display = "block";
+                }
+            }
+        }
+        function showStudentType() {
+        var studentTypeSelect = document.getElementById("studentTypeSelect").value;
+        // 根据学生类型显示不同内容的逻辑
+        // 这里可以根据需要添加相应的显示逻辑
+    }
+        function showFaculty() {
+            var select = document.getElementById("facultySelect");
+            var ecommerceFaculty = document.getElementById("ecommerceFaculty");
+            var aiFaculty = document.getElementById("aiFaculty");
+        
+            if (select.value === "ecommerce") {
+                ecommerceFaculty.style.display = "block";
+                aiFaculty.style.display = "none";
+            } else {
+                ecommerceFaculty.style.display = "none";
+                aiFaculty.style.display = "block";
+            }
+        }
+        
+        function toggleProfessor(professorId) {
+            var element = document.getElementById(professorId);
+            if (element.classList.contains("show")) {
+                element.classList.remove("show");
+            } else {
+                var details = document.getElementsByClassName("professor-details");
+                for (var i = 0; i < details.length; i++) {
+                    details[i].classList.remove("show");
+                }
+                element.classList.add("show");
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        </script>
+        <script>
+            function showCourses() {
+                var courseSelect = document.getElementById("courseSelect").value;
+                var requiredCourses = document.getElementById("requiredCourses");
+                var electiveCourses = document.getElementById("electiveCourses");
+            
+                if (courseSelect === "required") {
+                    requiredCourses.style.display = "block";
+                    electiveCourses.style.display = "none";
+                } else {
+                    requiredCourses.style.display = "none";
+                    electiveCourses.style.display = "block";
+                }
+            }
+            </script>
+            <script>
+                function showCourseModal(content) {
+                    var modal = document.getElementById('courseModal');
+                    var modalContent = document.getElementById('courseModalContent');
+                    modalContent.innerHTML = content;
+                    modal.style.display = 'block';
+                }
+            
+                function closeCourseModal() {
+                    var modal = document.getElementById('courseModal');
+                    modal.style.display = 'none';
+                }
+            </script>
+            <script>
+                function openCourseDetails(courseName) {
+                    var courseDetails = '';
+                    if (courseName === '高等資料庫(一上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Friday 星期五/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資料庫管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>蔡幸蓁</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    } else if (courseName === '高等資訊管理(一上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '企業倫理(一下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>企業倫理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>N/A</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '資訊管理講座(二上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '論文(二下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '電子商務總論(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '網路行銷專題(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '物聯網概論與應用(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '金融科技與金融行銷(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '研究方法(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '電子採購與物流專題(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '資訊系統專案管理(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '巨量資料探勘(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '機器學習(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '巨量資料探勘(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '資訊系統專案管理(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '資訊安全(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '決策分析(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '人工智慧產業實務(上)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '人工智慧(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '深度學習導論與應用(下))') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '軟體工程(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '使用者經驗設計(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '服務科學專題(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '知識管理(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }else if (courseName === '全球運籌與供應鏈(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    else if (courseName === '倫理AI與AI倫理(下)') {
+                        courseDetails = `
+                            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                                <h2 style="color: #004080;">課程詳細資訊</h2>
+                                <p><strong>學年度：</strong>113 學年度</p>
+                                <p><strong>學期：</strong>第 1 學期</p>
+                                <p><strong>開課單位：</strong>資管碩一</p>
+                                <p><strong>學制別：</strong>研究所</p>
+                                <p><strong>上課時間／地點：</strong>Monday 星期一/D2,D3,D4/LM311</p>
+                                <p><strong>科目名稱：</strong>高等資訊管理</p>
+                                <p><strong>選別：</strong>必修</p>
+                                <p><strong>學分：</strong>3</p>
+                                <p><strong>課程 / 教材語言：</strong>中文 / 中英文</p>
+                                <p><strong>授課教師：</strong>林湘霖</p>
+                                <p><strong>教師背景：</strong>專任</p>
+                                <p><strong>專長符合：</strong>符合專長</p>
+                                <p><strong>擋修課程：</strong>無</p>
+                            </div>
+                        `;
+                    }
+                    var newWindow = window.open("", "_blank", "width=600,height=400");
+                    newWindow.document.write("<html><head><title>課程詳細資訊</title></head><body>" + courseDetails + "</body></html>");
+                }
+            </script>
+            <script>
+                function showStudentType() {
+                    var studentTypeSelect = document.getElementById("studentTypeSelect").value;
+                    var regularCourses = document.getElementById("regularCourses");
+                    var partTimeCourses = document.getElementById("partTimeCourses");
+            
+                    if (studentTypeSelect === "regular") {
+                        regularCourses.style.display = "block";
+                        partTimeCourses.style.display = "none";
+                    } else if (studentTypeSelect === "partTime") {
+                        regularCourses.style.display = "none";
+                        partTimeCourses.style.display = "block";
+                    }
+                }
+            
+                function showRegularCourses() {
+                    var courseTypeSelect = document.getElementById("regularCourseTypeSelect").value;
+                    var requiredCourses = document.getElementById("regularRequiredCourses");
+                    var electiveCourses = document.getElementById("regularElectiveCourses");
+            
+                    if (courseTypeSelect === "required") {
+                        requiredCourses.style.display = "block";
+                        electiveCourses.style.display = "none";
+                    } else {
+                        requiredCourses.style.display = "none";
+                        electiveCourses.style.display = "block";
+                    }
+                }
+            
+                function showPartTimeCourses() {
+                    var courseTypeSelect = document.getElementById("partTimeCourseTypeSelect").value;
+                    var requiredCourses = document.getElementById("partTimeRequiredCourses");
+                    var electiveCourses = document.getElementById("partTimeElectiveCourses");
+            
+                    if (courseTypeSelect === "required") {
+                        requiredCourses.style.display = "block";
+                        electiveCourses.style.display = "none";
+                    } else {
+                        requiredCourses.style.display = "none";
+                        electiveCourses.style.display = "block";
+                    }
+                }
+            </script>
+</body>
+</html>
