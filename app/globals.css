@@ -22,6 +22,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  flex: 1; /* 讓 body 的內容可以擴展 */
 }
 
 * {
@@ -58,6 +59,7 @@ header {
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
+  flex: 1; /* 讓 container 填滿剩餘空間 */
 }
 .section {
   background-color: white;
@@ -88,12 +90,42 @@ h2 {
 footer {
   background-color: #004080;
   color: white;
-  text-align: center;
   padding: 1rem;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-sizing: border-box;
+  display: flex; /* 讓 footer 改成橫向排列 */
+  justify-content: space-between; /* 三群之間均勻分布 */
+  flex-wrap: wrap; /* 如果螢幕小時換行 */
+  text-align: left;
+}
+footer.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  background-color: #004080;
+  color: white;
+  padding: 2rem;
+  text-align: left;
+  gap: 2rem; /* 每群之間留空 */
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  padding: 0 1rem;
+  border-right: 1px solid white;
+}
+.footer-section:last-child {
+  border-right: none; /* 最後一個不畫分隔線 */
+}
+
+.footer-section h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  border-bottom: 1px solid white;
+  padding-bottom: 0.3rem;
+}
+
+.footer-section p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
 }
 a {
   color: #0066cc;
@@ -117,7 +149,6 @@ background-color: #f4f4f4;
 color: #004080;
 margin-right: 10px; /* 增加右边距 */
 }
-
 
 .faculty-container {
 display: flex;
@@ -157,3 +188,7 @@ display: block;
 opacity: 1;
 transform: translateY(0);
 }
+
+
+
+
