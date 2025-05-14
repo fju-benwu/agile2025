@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function Pages3() {
+export default function Page3() {
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://www.instagram.com/embed.js";
