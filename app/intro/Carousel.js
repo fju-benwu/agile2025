@@ -4,7 +4,7 @@ import { Carousel } from "react-responsive-carousel";
 import Page from "./page0";
 import Page1 from "./page1";
 import Page2 from "./page2";
-import Pages3 from "./pages3";
+import Page3 from "./page3";
 
 export default function CarouselComponent() {
     return (
