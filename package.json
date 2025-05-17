@@ -10,6 +10,7 @@
     "moveFirestore": "node scripts/moveFirestore.js"
   },
   "dependencies": {
+    "canvas-confetti": "^1.9.3",
     "dotenv": "^16.5.0",
     "firebase": "^11.6.0",
     "next": "^15.2.4",
