@@ -300,57 +300,88 @@ export default function RulesPage() {
   function updateProgress() {
     if (!requirements) return;
 
-    // 只抓必修與選修
     const categories = requirements.categories;
-    let sections = [
-      categories.required, // 必修
-      categories.elective  // 選修
-    ];
 
-    let sectionCompleted = [false, false];
-
-    // 學分統計
+    // 統計所有有 courses 的類別（排除 thesis）
     let completed = 0;
     let total = 0;
     let thesisCompleted = 0;
     let thesisTotal = 0;
 
-    // 必修
-    if (sections[0]) {
-      let sum = 0;
-      sections[0].courses.forEach(c => {
-        total += c.credit;
-        if (checked[c.id]) {
-          sum += c.credit;
-          completed += c.credit;
-        }
-      });
-      if (sum >= sections[0].required) sectionCompleted[0] = true;
+    Object.entries(categories).forEach(([key, cat]) => {
+      if (cat.courses && key !== "thesis") {
+        cat.courses.forEach(c => {
+          total += c.credit;
+          if (checked[c.id]) completed += c.credit;
+        });
+      }
+      if (key === "thesis" && cat.courses) {
+        cat.courses.forEach(c => {
+          thesisTotal += c.credit;
+          if (checked[c.id]) thesisCompleted += c.credit;
+        });
+      }
+    });
+
+    // 進度條分區（一般生4區、在職2區）
+    let sectionCompleted = [];
+    if (studentType === "partTime") {
+      // 在職專班：必修、選修
+      sectionCompleted = [
+        (() => {
+          const cat = categories.required;
+          if (!cat) return false;
+          let sum = 0;
+          cat.courses.forEach(c => { if (checked[c.id]) sum += c.credit; });
+          return sum >= cat.required;
+        })(),
+        (() => {
+          const cat = categories.elective;
+          if (!cat) return false;
+          let sum = 0;
+          cat.courses.forEach(c => { if (checked[c.id]) sum += c.credit; });
+          return sum >= cat.required;
+        })()
+      ];
+    } else {
+      // 一般生：必修、必選修、選修、其他畢業條件
+      sectionCompleted = [
+        (() => {
+          const cat = categories.required;
+          if (!cat) return false;
+          let sum = 0;
+          cat.courses.forEach(c => { if (checked[c.id]) sum += c.credit; });
+          return sum >= cat.required;
+        })(),
+        (() => {
+          // 必選修（AI: requiredAI, EC: requiredEC+requiredECElective, 其他: requiredOther）
+          let cat = categories.requiredAI || categories.requiredEC || categories.requiredECElective || categories.requiredOther;
+          if (!cat) return false;
+          let sum = 0, count = 0;
+          cat.courses.forEach(c => { if (checked[c.id]) { sum += c.credit; count++; } });
+          if (cat.minCourses) {
+            return count >= cat.minCourses && sum >= cat.required;
+          }
+          return sum >= cat.required;
+        })(),
+        (() => {
+          const cat = categories.elective;
+          if (!cat) return false;
+          let sum = 0;
+          cat.courses.forEach(c => { if (checked[c.id]) sum += c.credit; });
+          return sum >= cat.required;
+        })(),
+        (() => {
+          const cat = categories.additionalRequirements;
+          if (!cat) return false;
+          let ok = 0;
+          cat.requirements.forEach(r => { if (checked[r.id]) ok++; });
+          return ok >= cat.required;
+        })()
+      ];
     }
 
-    // 選修
-    if (sections[1]) {
-      let sum = 0;
-      sections[1].courses.forEach(c => {
-        total += c.credit;
-        if (checked[c.id]) {
-          sum += c.credit;
-          completed += c.credit;
-        }
-      });
-      if (sum >= sections[1].required) sectionCompleted[1] = true;
-    }
-
-    // 論文學分（不計入總學分）
-    if (categories.thesis) {
-      categories.thesis.courses.forEach(c => {
-        thesisTotal += c.credit;
-        if (checked[c.id]) thesisCompleted += c.credit;
-      });
-    }
-
-    // 計算百分比（每區 50%）
-    let percent = sectionCompleted.filter(Boolean).length * 50;
+    let percent = sectionCompleted.filter(Boolean).length * (studentType === "partTime" ? 50 : 25);
 
     setProgress({
       completed,
@@ -665,6 +696,13 @@ export default function RulesPage() {
           color: #555;
           margin-top: 4px;
         }
+        input[type="checkbox"] {
+          width: 18px !important;
+          height: 18px !important;
+          min-width: 18px;
+          min-height: 18px;
+          box-sizing: border-box;
+        }
       `}</style>
       <h1>修業規則及畢業條件檢核</h1>
       
@@ -681,6 +719,8 @@ export default function RulesPage() {
               // 如果選擇在職專班，自動設定為標準課程
               if (newType === "partTime") {
                 setTrack("standard");
+              } else if (newType === "regular") {
+                setTrack("ai"); // 自動帶入人工智慧組
               }
             }}
           >
