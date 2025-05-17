@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
         <title>輔大資管碩士新生資訊系統</title>
       </head>
 
+<<<<<<< Updated upstream
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <header style={{ backgroundColor: '#284975', padding: '1rem', color: 'white' }}> {/* 將 header 文字預設設為白色 */}
           <h1>輔大資管碩士新生資訊系統</h1>
@@ -41,6 +42,37 @@ export default function RootLayout({ children }) {
             </Link>
             {/* 你可以根據需求添加其他的導覽連結 */}
           </nav>
+=======
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>  
+          <header
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "1rem 2rem",
+            borderBottom: "1px solid #eee",
+          }}
+        >
+          <div>
+            <h1 style={{ margin: 0 }}>輔大資管碩士新生資訊系統</h1>
+            <p style={{ margin: 0 }}>整合修業規則、課程資訊與師資介紹</p>
+          </div>
+          <a
+            href="/login/login.html"
+            style={{
+              padding: "0.5rem 1.2rem",
+              fontSize: "1rem",
+              background: "#004080",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              textDecoration: "none",
+            }}
+          >
+            登入
+          </a>
+>>>>>>> Stashed changes
         </header>
         {children}
 
