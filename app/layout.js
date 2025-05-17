@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "輔大資管碩士新生資訊系統",
-  description: "整合修業規則、課程資訊與師資介紹",
+  title: "輔大資管碩士新生資訊系統"
+  
 };
 
 export default function RootLayout({ children }) {
@@ -30,6 +30,9 @@ export default function RootLayout({ children }) {
         <header style={{ backgroundColor: '#284975', padding: '1rem', color: 'white' }}> {/* 將 header 文字預設設為白色 */}
           <h1>輔大資管碩士新生資訊系統</h1>
           <nav style={{ display: 'flex', gap: '20px', marginTop: '1rem', justifyContent: 'flex-end' }}> {/* 使用 justify-content: flex-end 將內容靠右 */}
+            <Link href="/rules" style={{ textDecoration: 'none', color: 'white' }}>
+              修業規則
+            </Link>
             <Link href="/teacher" style={{ textDecoration: 'none', color: 'white' }}>
               師資介紹
             </Link>
