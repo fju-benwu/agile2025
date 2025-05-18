@@ -76,10 +76,10 @@ export default function Teacher({ tName }) {
         <div
           style={{
             width: "300px",
-            height: "150px",
+            height: "450px",
             margin: "0 auto 18px auto",
             padding: "15px",
-            border: "5px solid blue",
+            border: "5px solid #90caf9", // 淺藍色邊框
             backgroundColor: "lightgray",
             display: "flex",
             alignItems: "center",
