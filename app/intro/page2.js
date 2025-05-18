@@ -1,4 +1,4 @@
-import Carousel from "./carousel";
+import Carousel from "./carous";
 
 export default function Page2() {
     return (
