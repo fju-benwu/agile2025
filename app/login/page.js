@@ -1,6 +1,23 @@
-"use client";
+"use client"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import app from "@/app/_firebase/Config";
 
 export default function LoginPage() {
+
+  const auth = getAuth(app);
+  const login = async (email, password) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // 登入成功，可導向其他頁面
+      alert("登入成功");
+    } catch (err) {
+      alert("登入失敗: " + err.message);
+      // setError(err.message);
+    } finally {
+      // setLoading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto max-w-md p-6 bg-white rounded shadow">
       <h2 className="text-xl font-bold mb-4 text-center">會員登入</h2>
@@ -8,12 +25,17 @@ export default function LoginPage() {
         className="space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
-          alert("尚未串接後端驗證");
+          login(
+            e.target.username.value,
+            e.target.password.value
+          );
+          // alert(e.target.username.value);
         }}
       >
         <div>
           <label className="block mb-1">帳號</label>
           <input
+            name="username"
             type="text"
             className="w-full border px-3 py-2 rounded"
             placeholder="Username"
@@ -23,6 +45,7 @@ export default function LoginPage() {
         <div>
           <label className="block mb-1">密碼</label>
           <input
+            name="password"
             type="password"
             className="w-full border px-3 py-2 rounded"
             placeholder="Password"
