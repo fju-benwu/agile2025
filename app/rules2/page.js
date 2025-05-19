@@ -324,6 +324,10 @@ export default function RulesPage() {
         });
 
         const docRef = doc(db, collectionPath, docId);
+        
+        console.log(`準備上傳到: ${collectionPath}/${docId}`);
+        console.log('資料內容:', JSON.stringify(dataToUpload, null, 2));
+        
         await setDoc(docRef, dataToUpload, { merge: true });
         
         console.log(`已上傳: ${collectionPath}/${docId}`);
@@ -1125,37 +1129,43 @@ export default function RulesPage() {
           justify-content: center;
           align-items: center;
           z-index: 1000;
+          padding: 20px;
+          box-sizing: border-box;
         }
         .modal-content {
           background-color: white;
-          padding: 30px;
+          padding: 25px;
           border-radius: 12px;
-          width: 90%;
-          max-width: 500px;
+          width: 100%;
+          max-width: 480px;
+          max-height: 90vh;
+          overflow-y: auto;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          border: 1px solid #ddd;
+          box-sizing: border-box;
         }
         .modal-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 25px;
+          margin-bottom: 20px;
           border-bottom: 2px solid #ecf0f1;
-          padding-bottom: 15px;
+          padding-bottom: 12px;
         }
         .modal-header h3 {
           margin: 0;
           color: #2c3e50;
-          font-size: 1.3em;
+          font-size: 1.2em;
         }
         .close-button {
           background: none;
           border: none;
-          font-size: 28px;
+          font-size: 24px;
           cursor: pointer;
           color: #7f8c8d;
           padding: 0;
-          width: 40px;
-          height: 40px;
+          width: 35px;
+          height: 35px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1169,11 +1179,11 @@ export default function RulesPage() {
           box-shadow: none;
         }
         .form-group {
-          margin-bottom: 20px;
+          margin-bottom: 18px;
         }
         .form-group label {
           display: block;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
           font-weight: bold;
           color: #2c3e50;
           font-size: 14px;
@@ -1181,51 +1191,58 @@ export default function RulesPage() {
         .form-group input[type="text"],
         .form-group input[type="number"] {
           width: 100%;
-          padding: 12px;
+          padding: 10px;
           border: 2px solid #ddd;
           border-radius: 6px;
-          font-size: 16px;
+          font-size: 15px;
           font-family: 'Microsoft JhengHei', Arial, sans-serif;
           transition: border-color 0.3s;
           box-sizing: border-box;
+          background-color: #fff;
         }
         .form-group input[type="text"]:focus,
         .form-group input[type="number"]:focus {
           border-color: #3498db;
           outline: none;
+          box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
         }
         .checkbox-group {
           display: flex;
           align-items: center;
           gap: 10px;
+          padding: 6px 0;
         }
         .checkbox-group input[type="checkbox"] {
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
           accent-color: #e74c3c;
+          cursor: pointer;
         }
         .checkbox-group label {
           margin: 0;
           cursor: pointer;
           font-weight: normal;
+          color: #2c3e50;
+          font-size: 14px;
         }
         .modal-buttons {
           display: flex;
-          gap: 15px;
+          gap: 12px;
           justify-content: flex-end;
-          margin-top: 30px;
-          padding-top: 20px;
+          margin-top: 25px;
+          padding-top: 18px;
           border-top: 1px solid #ecf0f1;
         }
         .modal-button {
-          padding: 12px 25px;
+          padding: 10px 22px;
           border: none;
           border-radius: 6px;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: bold;
           cursor: pointer;
           transition: all 0.3s;
-          min-width: 100px;
+          min-width: 90px;
+          font-family: 'Microsoft JhengHei', Arial, sans-serif;
         }
         .cancel-button {
           background-color: #95a5a6;
@@ -1233,6 +1250,8 @@ export default function RulesPage() {
         }
         .cancel-button:hover {
           background-color: #7f8c8d;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .save-button {
           background-color: #27ae60;
@@ -1240,10 +1259,46 @@ export default function RulesPage() {
         }
         .save-button:hover {
           background-color: #229954;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .save-button:disabled {
           background-color: #bdc3c7;
           cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+        /* 管理者按鈕樣式 */
+        .admin-buttons {
+          display: flex;
+          gap: 8px;
+          margin-left: 12px;
+        }
+        .admin-button {
+          padding: 4px 10px;
+          font-size: 13px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-weight: bold;
+          transition: all 0.2s;
+          color: white;
+        }
+        .edit-button {
+          background-color: #f39c12;
+        }
+        .edit-button:hover {
+          background-color: #e67e22;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .delete-button {
+          background-color: #e74c3c;
+        }
+        .delete-button:hover {
+          background-color: #c0392b;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         @media (max-width: 768px) {
           .main-layout {
@@ -1353,15 +1408,15 @@ export default function RulesPage() {
                           {course.isEnglishTaught && <span className="english-tag">英語授課</span>}
                         </label>
                         {adminMode && (
-                          <div style={{ display: "flex", gap: 8, marginLeft: 12 }}>
+                          <div className="admin-buttons">
                             <button
-                              style={{ padding: "4px 10px", fontSize: 13, background: "#f59e42" }}
+                              className="admin-button edit-button"
                               onClick={() => handleEditCourse(course, "thesis")}
                             >
                               編輯
                             </button>
                             <button
-                              style={{ padding: "4px 10px", fontSize: 13, background: "#e74c3c" }}
+                              className="admin-button delete-button"
                               onClick={() => handleDeleteCourse(course, "thesis")}
                             >
                               刪除
@@ -1408,15 +1463,15 @@ export default function RulesPage() {
                           {course.isEnglishTaught && <span className="english-tag">英語授課</span>}
                         </label>
                         {adminMode && (
-                          <div style={{ display: "flex", gap: 8, marginLeft: 12 }}>
+                          <div className="admin-buttons">
                             <button
-                              style={{ padding: "4px 10px", fontSize: 13, background: "#f59e42" }}
+                              className="admin-button edit-button"
                               onClick={() => handleEditCourse(course, key)}
                             >
                               編輯
                             </button>
                             <button
-                              style={{ padding: "4px 10px", fontSize: 13, background: "#e74c3c" }}
+                              className="admin-button delete-button"
                               onClick={() => handleDeleteCourse(course, key)}
                             >
                               刪除
