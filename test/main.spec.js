@@ -17,7 +17,8 @@ describe('首頁', (async function firstTest() {
     let title = await driver.getTitle();
     // console.log("Page title is: " + title);
     assert.equal("輔大資管碩士新生資訊系統", title);
-    
+    //為了讓大家看到頁面
+    await new Promise(resolve => setTimeout(resolve, 3000));
   });
 
 }));
