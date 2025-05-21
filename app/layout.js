@@ -127,7 +127,7 @@ export default function RootLayout({ children }) {
               }}
             >
               <img
-                src="/icon/Instagram-Logo.wine.png"
+                src="/Users/jenny/Desktop/敏捷式/agile2025/public/icon/Instagram_logo_2016.svg.png"
                 alt="Instagram"
                 style={{
                   width: "120px",
