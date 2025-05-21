@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
             marginTop: '1rem',
             justifyContent: 'flex-end'
           }}>
-            <Link href="/rules" style={{ textDecoration: 'none', color: 'white' }}>修業規則</Link>
+            <Link href="/rules2" style={{ textDecoration: 'none', color: 'white' }}>修業規則</Link>
             <Link href="/teacher" style={{ textDecoration: 'none', color: 'white' }}>師資介紹</Link>
             <Link href="/" style={{ textDecoration: 'none', color: 'white' }}>課程資訊</Link>
             <Link href="/intro" style={{ textDecoration: 'none', color: 'white' }}>系所介紹</Link>
