@@ -10,7 +10,7 @@ const renderTeachers = (teachers) => {
   if (Array.isArray(teachers)) {
     return teachers.map((teacher, index) => (
       <span key={index}>
-        <Link href={`/teacher/${encodeURIComponent(teacher.trim())}`}>
+        <Link href={`/teacher?teacher=${encodeURIComponent(teacher.trim())}`}>
           {teacher.trim()}
         </Link>
         {index < teachers.length - 1 && ", "}
@@ -18,7 +18,7 @@ const renderTeachers = (teachers) => {
     ));
   } else {
     return (
-      <Link href={`/teacher/${encodeURIComponent(teachers.trim())}`}>
+      <Link href={`/teacher?teacher=${encodeURIComponent(teachers.trim())}`}>
         {teachers.trim()}
       </Link>
     );
