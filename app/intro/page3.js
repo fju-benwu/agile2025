@@ -3,14 +3,14 @@ import { useEffect } from "react";
 export default function Page3() {
     useEffect(() => {
         const script = document.createElement("script");
-        script.src = "https://www.instagram.com/embed.js";
+        script.src = "https://youtu.be/KCA4jxwc2Pg?si=jBz9sfAOrNktvE3-";
         script.async = true;
         document.body.appendChild(script);
     }, []);
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold">Instagram Video</h1>
+            <h1 className="text-2xl font-bold">輔大資管搶先看</h1>
             <div className="mt-4">
                 <blockquote
                     className="instagram-media"
