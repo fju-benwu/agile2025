@@ -26,39 +26,25 @@ export default function RootLayout({ children }) {
         <title>輔大資管碩士新生資訊系統</title>
       </head>
 
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>  
-          <header
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "1rem 2rem",
-            borderBottom: "1px solid #eee",
-          }}
-        >
-          <div>
-            <h1 style={{ margin: 0 }}>輔大資管碩士新生資訊系統</h1>
-            <p style={{ margin: 0 }}>整合修業規則、課程資訊與師資介紹</p>
-          </div>
-          <a
-            href="/login/login.html"
-            style={{
-              padding: "0.5rem 1.2rem",
-              fontSize: "1rem",
-              background: "#004080",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              textDecoration: "none",
-            }}
-          >
-            登入
-          </a>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <header style={{ backgroundColor: '#284975', padding: '1rem', color: 'white' }}> {/* 將 header 文字預設設為白色 */}
+          <h1>輔大資管碩士新生資訊系統</h1>
+          <nav style={{ display: 'flex', gap: '20px', marginTop: '1rem', justifyContent: 'flex-end' }}> {/* 使用 justify-content: flex-end 將內容靠右 */}
+            <Link href="/teacher" style={{ textDecoration: 'none', color: 'white' }}>
+              師資介紹
+            </Link>
+            <Link href="/" style={{ textDecoration: 'none', color: 'white' }}>
+              課程資訊
+            </Link>
+            <Link href="/intro" style={{ textDecoration: 'none', color: 'white' }}>
+              系所介紹
+            </Link>
+            {/* 你可以根據需求添加其他的導覽連結 */}
+          </nav>
         </header>
-        {children}
 
-        {/* 測試版 footer，內嵌 CSS 保證排版效果 */}
+        <main style={{ padding: '20px' }}>{children}</main>
+
         <footer
           style={{
             display: "flex",
@@ -70,27 +56,13 @@ export default function RootLayout({ children }) {
             gap: "2rem",
           }}
         >
-          <div
-            style={{
-              flex: 1,
-              minWidth: "200px",
-              borderRight: "1px solid white",
-              padding: "0 1rem",
-            }}
-          >
+          <div style={{ flex: 1, minWidth: "200px", borderRight: "1px solid white", padding: "0 1rem" }}>
             <h3>📍 系辦公室資訊</h3>
             <p>地址：242 新北市新莊區中正路 510 號，利瑪竇大樓 LM306</p>
             <p>傳真：(02) 2905-2182</p>
           </div>
 
-          <div
-            style={{
-              flex: 1,
-              minWidth: "200px",
-              borderRight: "1px solid white",
-              padding: "0 1rem",
-            }}
-          >
+          <div style={{ flex: 1, minWidth: "200px", borderRight: "1px solid white", padding: "0 1rem" }}>
             <h3>👩‍💼 碩士班系秘書</h3>
             <p>姓名：羅淑貞</p>
             <p>電話：(02) 2905-2940</p>
@@ -98,13 +70,7 @@ export default function RootLayout({ children }) {
             <p>辦公室：利瑪竇大樓 LM306</p>
           </div>
 
-          <div
-            style={{
-              flex: 1,
-              minWidth: "200px",
-              padding: "0 1rem",
-            }}
-          >
+          <div style={{ flex: 1, minWidth: "200px", padding: "0 1rem" }}>
             <h3>🤵🏻‍♀️ 碩士在職專班秘書</h3>
             <p>姓名：徐智慧</p>
             <p>電話：(02) 2905-2626</p>
