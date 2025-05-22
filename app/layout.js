@@ -395,7 +395,7 @@ export default function RootLayout({ children }) {
         </main>
 
         <footer className="footer">
-          <div className="container footer-content">
+          <div className="footer-content">
             <div className="footer-section">
               <h3 className="footer-heading">📍 系辦公室資訊</h3>
               <p className="footer-info">地址：242 新北市新莊區中正路 510 號，利瑪竇大樓 LM306</p>
