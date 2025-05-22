@@ -1021,7 +1021,7 @@ export default function RulesPage() {
           box-shadow: 0 2px 10px rgba(0,0,0,0.1);
           margin-bottom: 20px;
         }
-        .container {
+        .rule-container {
           background-color: white;
           border-radius: 8px;
           padding: 20px;
@@ -1474,7 +1474,7 @@ export default function RulesPage() {
         <div className="left-content">
           {/* 錯誤狀態處理 */}
           {error && (
-            <div className="container">
+            <div className="rule-container">
               <div className="error-message">
                 <p>{error}</p>
                 <button onClick={fetchRequirementsData}>重新載入</button>
@@ -1484,7 +1484,7 @@ export default function RulesPage() {
 
           {/* 載入狀態處理 */}
           {loading && (
-            <div className="container">
+            <div className="rule-container">
               <div className="loading-message">
                 <p>正在載入修業規則資料...</p>
               </div>
@@ -1564,7 +1564,7 @@ export default function RulesPage() {
           
           {/* 修業規定 */}
           {requirements && !loading && (
-            <div className="container">
+            <div className="rule-container">
               <h2>修業規定</h2>
               <p>請勾選您已經修過的課程：</p>
               <div id="course-list">
