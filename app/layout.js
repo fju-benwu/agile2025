@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
   const handleLogout = async () => {
     await signOut(auth);
     window.alert("已成功登出！");
-    window.location.href = "/login";
+    window.location.href = "/agile2025/login";
   };
 
   const toggleMobileMenu = () => {
@@ -380,7 +380,7 @@ export default function RootLayout({ children }) {
                 </>
               ) : (
                 <a
-                  href="/login"
+                  href="/agile2025/login"
                   className="button button-primary"
                 >
                   登入
