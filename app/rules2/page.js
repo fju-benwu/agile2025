@@ -120,7 +120,7 @@ export default function RulesPage() {
     if (!currentUser) {
       alert("請先登入以儲存您的選課資料！");
       // 重導向到登入頁面
-      window.location.href = "/agile2025/login"; // 請替換為您的實際登入頁面路徑
+      window.location.href = "/login"; // 請替換為您的實際登入頁面路徑
       return;
     }
     
@@ -1021,7 +1021,7 @@ export default function RulesPage() {
           box-shadow: 0 2px 10px rgba(0,0,0,0.1);
           margin-bottom: 20px;
         }
-        .rule-container {
+        .container {
           background-color: white;
           border-radius: 8px;
           padding: 20px;
@@ -1465,6 +1465,18 @@ export default function RulesPage() {
             margin: 20px;
             width: calc(100% - 40px);
           }
+          /* 手機版本按鈕調整 */
+          .container h2 {
+            margin-right: 0 !important;
+            margin-bottom: 60px;
+          }
+          .container .action-buttons {
+            position: relative !important;
+            top: auto !important;
+            right: auto !important;
+            margin-bottom: 15px;
+            justify-content: flex-start;
+          }
         }
       `}</style>
       
@@ -1474,7 +1486,7 @@ export default function RulesPage() {
         <div className="left-content">
           {/* 錯誤狀態處理 */}
           {error && (
-            <div className="rule-container">
+            <div className="container">
               <div className="error-message">
                 <p>{error}</p>
                 <button onClick={fetchRequirementsData}>重新載入</button>
@@ -1484,7 +1496,7 @@ export default function RulesPage() {
 
           {/* 載入狀態處理 */}
           {loading && (
-            <div className="rule-container">
+            <div className="container">
               <div className="loading-message">
                 <p>正在載入修業規則資料...</p>
               </div>
@@ -1494,13 +1506,17 @@ export default function RulesPage() {
           {/* 修課進度 */}
           {requirements && !loading && (
             <div className="container" style={{ position: "relative" }}>
+              <h2 style={{ marginRight: 240 }}>您的修課進度 - {requirements?.name}</h2>
+              
               {/* 右上角重置與儲存按鈕 */}
-              <div style={{ position: "absolute", top: 16, right: 16, zIndex: 2, display: "flex", gap: 8 }}>
+              <div className="action-buttons" style={{ position: "absolute", top: 20, right: 20, zIndex: 2, display: "flex", gap: 8 }}>
                 <button
                   style={{
                     background: "#e74c3c",
                     color: "white",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    padding: "8px 16px"
                   }}
                   onClick={() => {
                     if (confirm("確定要清除所有選擇的課程嗎？")) {
@@ -1515,14 +1531,15 @@ export default function RulesPage() {
                   style={{
                     background: "#27ae60",
                     color: "white",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    padding: "8px 16px"
                   }}
                   onClick={saveUserData}
                 >
                   儲存
                 </button>
               </div>
-              <h2>您的修課進度 - {requirements?.name}</h2>
               
               {/* 顯示用戶登入狀態 */}
               <div className={`user-status ${currentUser ? "logged-in" : "logged-out"}`}>
@@ -1564,7 +1581,7 @@ export default function RulesPage() {
           
           {/* 修業規定 */}
           {requirements && !loading && (
-            <div className="rule-container">
+            <div className="container">
               <h2>修業規定</h2>
               <p>請勾選您已經修過的課程：</p>
               <div id="course-list">
