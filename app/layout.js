@@ -201,7 +201,7 @@ export default function RootLayout({ children }) {
           
           .footer {
             background-color: var(--primary-light);
-            color: #222 !important; /* 這裡改為黑色 */
+            color: #fff !important; /* 這裡改為黑色 */
             padding: 2rem 1rem;
           }
           
@@ -225,13 +225,13 @@ export default function RootLayout({ children }) {
           .footer-heading {
             font-size: 1.2rem;
             margin-bottom: 1rem;
-            color: #222 !important; /* 標題也黑色 */
+            color: #fff !important; /* 標題也黑色 */
           }
           
           .footer-info {
             margin-bottom: 0.5rem;
             font-size: 0.95rem;
-            color: #222 !important; /* 內容黑色 */
+            color: #fff !important; /* 內容黑色 */
           }
           
           .hamburger {

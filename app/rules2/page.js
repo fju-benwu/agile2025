@@ -48,11 +48,16 @@ export default function RulesPage() {
   // 檢查用戶認證狀態
   useEffect(() => {
     const auth = getAuth(app);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
         // 用戶已登入，載入其已保存的資料
         loadUserData(user.uid);
+        // 檢查用戶是否為管理員
+        await checkAdminStatus(user.uid);
+      } else {
+        // 用戶登出時重置管理員狀態
+        setAdminMode(false);
       }
     });
     
@@ -60,7 +65,26 @@ export default function RulesPage() {
     return () => unsubscribe();
   }, []);
 
-  // 從用戶數據庫載入資料
+  // 檢查用戶是否為管理員
+  const checkAdminStatus = async (userId) => {
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnap = await getDoc(userDocRef);
+      
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const isAdmin = userData.role === "admin";
+        setAdminMode(isAdmin);
+        console.log("用戶角色:", userData.role, "是否為管理員:", isAdmin);
+      } else {
+        setAdminMode(false);
+        console.log("用戶文檔不存在，設置為非管理員");
+      }
+    } catch (error) {
+      console.error("檢查管理員狀態時出錯:", error);
+      setAdminMode(false);
+    }
+  };
   const loadUserData = async (userId) => {
     try {
       const userDocRef = doc(db, "users", userId);
@@ -1505,6 +1529,19 @@ export default function RulesPage() {
                 {currentUser ? (
                   <div>
                     <strong>當前登入用戶:</strong> {currentUser.displayName || currentUser.email}
+                    {adminMode && (
+                      <span style={{ 
+                        marginLeft: 10, 
+                        backgroundColor: "#e67e22", 
+                        color: "white", 
+                        padding: "2px 8px", 
+                        borderRadius: "4px", 
+                        fontSize: "12px",
+                        fontWeight: "bold"
+                      }}>
+                        管理員
+                      </span>
+                    )}
                   </div>
                 ) : (
                   <div>
@@ -1796,24 +1833,20 @@ export default function RulesPage() {
               </div>
             )}
 
-            {/* 管理者模式開關 */}
-            <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 8 }}>
-              <input
-                type="checkbox"
-                id="admin-mode-toggle"
-                checked={adminMode}
-                onChange={e => setAdminMode(e.target.checked)}
-                style={{ width: 18, height: 18, accentColor: "#e67e22", cursor: "pointer" }}
-              />
-              <label htmlFor="admin-mode-toggle" style={{ fontWeight: "bold", color: adminMode ? "#e67e22" : "#555", cursor: "pointer" }}>
-                管理者模式 {adminMode ? "（開啟）" : "（關閉）"}
-              </label>
-            </div>
-
-            {/* 管理者功能 */}
-            {adminMode && (
+            {/* 管理者功能區塊 - 只有管理員才顯示 */}
+            {adminMode && currentUser && (
               <div style={{ marginTop: 20, padding: 15, backgroundColor: "#fff3cd", borderRadius: 8, border: "1px solid #ffeaa7" }}>
-                <h4 style={{ margin: "0 0 15px 0", color: "#e67e22" }}>管理者功能</h4>
+                <h4 style={{ margin: "0 0 15px 0", color: "#e67e22" }}>
+                  🔧 管理者功能
+                  <span style={{ 
+                    marginLeft: 10, 
+                    fontSize: "12px", 
+                    color: "#666",
+                    fontWeight: "normal"
+                  }}>
+                    (僅管理員可見)
+                  </span>
+                </h4>
                 
                 {/* 下載模板 */}
                 <div style={{ marginBottom: 15 }}>
