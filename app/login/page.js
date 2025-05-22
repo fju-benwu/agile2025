@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/app/_firebase/FirebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
@@ -10,14 +9,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [showRegister, setShowRegister] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setMessage("✅ 登入成功！");
       window.alert("✅ 登入成功！");
-      router.push("/intro");
+      window.location.href = "/intro"; // 使用瀏覽器重新導向
     } catch (error) {
       setMessage(`❌ 登入失敗：${error.message}`);
       window.alert(`❌ 登入失敗：${error.message}`);
@@ -37,7 +35,7 @@ export default function LoginPage() {
       setMessage("✅ 註冊成功，將自動導向主頁。");
       window.alert("✅ 註冊成功，將自動導向主頁。");
       setShowRegister(false);
-      router.push("/rules2");
+      window.location.href = "/rules2"; // 使用瀏覽器重新導向
     } catch (error) {
       setMessage(`❌ 註冊失敗：${error.message}`);
       window.alert(`❌ 註冊失敗：${error.message}`);
