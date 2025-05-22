@@ -26,7 +26,7 @@ const globalStyle = `
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 20px;
   }
-  .container {
+  course-container {
     background-color: white;
     border-radius: 8px;
     padding: 20px;
@@ -578,7 +578,7 @@ export default function Course() {
           ← 返回課程列表
         </button>
         
-        <div className="container">
+        <div className="course-container">
           <div style={styles.teacherContainer}>
             {/* Left side - Image area */}
             <div style={{ textAlign: "center", flex: "1" }}>
@@ -695,7 +695,7 @@ export default function Course() {
         >
           ← 返回課程列表
         </button>
-        <div className="container">
+        <div className="course-container">
           <div style={{ textAlign: "center", padding: "40px", fontSize: "18px" }}>
             載入{selectedTeacher}的詳細資料中...
           </div>
@@ -738,7 +738,7 @@ export default function Course() {
       </div>
       
       {/* Course section */}
-      <div className="container">
+      <div className="course-container">
         <h2 style={styles.heading}>修業規則與必選修課程</h2>
         
         <div className="selector-container">
@@ -838,7 +838,7 @@ export default function Course() {
       </div>
 
       {/* Schedule section */}
-      <div className="container">
+      <div className="course-container">
         <h2 style={styles.heading}>課表</h2>
         
         <div className="selector-container">
