@@ -352,16 +352,16 @@ export default function RootLayout({ children }) {
                 <span className="hamburger-line"></span>
               </div>
               <nav className="nav" ref={navRef}>
-                <Link href="/agile2025/rules2" className="nav-link">
+                <Link href="/rules2" className="nav-link">
                   修業規則
                 </Link>
-                <Link href="/agile2025/teacher" className="nav-link">
+                <Link href="/teacher" className="nav-link">
                   師資介紹
                 </Link>
-                <Link href="/agile2025/" className="nav-link">
+                <Link href="/" className="nav-link">
                   課程資訊
                 </Link>
-                <Link href="/agile2025/intro" className="nav-link">
+                <Link href="/intro" className="nav-link">
                   系所介紹
                 </Link>
               </nav>
