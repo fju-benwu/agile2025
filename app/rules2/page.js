@@ -120,7 +120,7 @@ export default function RulesPage() {
     if (!currentUser) {
       alert("請先登入以儲存您的選課資料！");
       // 重導向到登入頁面
-      window.location.href = "/login"; // 請替換為您的實際登入頁面路徑
+      window.location.href = "/agile2025/login"; // 請替換為您的實際登入頁面路徑
       return;
     }
     
