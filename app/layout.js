@@ -68,6 +68,10 @@ export default function RootLayout({ children }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>輔大資管碩士新生資訊系統</title>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        />
         <style jsx global>{`
           :root {
             --primary-color: #1a365d;
@@ -400,8 +404,16 @@ export default function RootLayout({ children }) {
               <h3 className="footer-heading">📍 系辦公室資訊</h3>
               <p className="footer-info">地址：242 新北市新莊區中正路 510 號，利瑪竇大樓 LM306</p>
               <p className="footer-info">傳真：(02) 2905-2182</p>
+              <a 
+                href="https://www.instagram.com/fjcuim/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{ textDecoration: "none", color: "#fff", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "6px" }}
+              >
+                <i className="fab fa-instagram" style={{ fontSize: "18px" }}></i>
+                <span>追蹤我們的 IG</span>
+              </a>
             </div>
-
             <div className="footer-section">
               <h3 className="footer-heading">👩‍💼 碩士班系秘書</h3>
               <p className="footer-info">姓名：羅淑貞</p>
