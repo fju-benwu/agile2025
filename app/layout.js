@@ -399,7 +399,7 @@ export default function RootLayout({ children }) {
         </main>
 
         <footer className="footer">
-          <div className="container footer-content">
+          <div className="footer-content">
             <div className="footer-section">
               <h3 className="footer-heading">📍 系辦公室資訊</h3>
               <p className="footer-info">地址：242 新北市新莊區中正路 510 號，利瑪竇大樓 LM306</p>
@@ -417,7 +417,7 @@ export default function RootLayout({ children }) {
                 }}
               >
                 <img 
-                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/assets/instagram-icon.png`}  // 請根據實際放置路徑修改
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/assets/instagram-icon.png`}   // 請根據實際放置路徑修改
                   alt="Instagram" 
                   style={{ width: "28px", height: "28px" }} 
                 />
