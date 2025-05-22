@@ -97,7 +97,45 @@ export default function ConsolidatedTeacherPage() {
         const studentSnapshot = await getDocs(studentCollection);
         const students = studentSnapshot.docs.map((doc) => doc.data());
 
-        setTeacherData({ ...teacherInfo, students });
+        // 合併學生資料和論文資料
+        let allStudentData = [];
+        
+        // 從 subcollection 獲取的學生資料
+        if (students && students.length > 0) {
+          allStudentData = [...students];
+        }
+        
+        // 從主文檔的 thesis 陣列獲取論文資料
+        if (teacherInfo.thesis && Array.isArray(teacherInfo.thesis)) {
+          const thesisData = teacherInfo.thesis.map(thesis => ({
+            學生姓名: thesis.student,
+            入學學年度: thesis.year ? `${thesis.year}學年度` : '未記錄',
+            論文題目: thesis.title,
+            資料來源: 'thesis' // 標記資料來源
+          }));
+          allStudentData = [...allStudentData, ...thesisData];
+        }
+
+        // 去重並排序 (按學年度倒序)
+        const uniqueStudents = [];
+        const seen = new Set();
+        
+        allStudentData.forEach(student => {
+          const key = `${student.學生姓名}-${student.論文題目}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            uniqueStudents.push(student);
+          }
+        });
+
+        // 按學年度排序 (最新的在前)
+        uniqueStudents.sort((a, b) => {
+          const yearA = parseInt(a.入學學年度?.toString().replace(/\D/g, '') || '0');
+          const yearB = parseInt(b.入學學年度?.toString().replace(/\D/g, '') || '0');
+          return yearB - yearA;
+        });
+
+        setTeacherData({ ...teacherInfo, students: uniqueStudents });
       } else {
         setTeacherData(null);
       }
@@ -381,19 +419,53 @@ export default function ConsolidatedTeacherPage() {
               <p style={{ color: "#999" }}>無專長資料</p>
             )}
 
-            <div style={{ margin: "18px 0 10px 0", fontWeight: "bold", color: "#0d9488", fontSize: "20px" }}>學生資料</div>
+            {/* 指導學生與論文資料 */}
+            <div style={{ margin: "18px 0 10px 0", fontWeight: "bold", color: "#0d9488", fontSize: "20px" }}>指導學生與論文</div>
             {Array.isArray(teacherData.students) && teacherData.students.length > 0 ? (
-              <ul style={{ paddingLeft: "24px", listStyleType: "disc", marginBottom: "18px" }}>
+              <div style={{ marginBottom: "18px" }}>
                 {teacherData.students.map((student, index) => (
-                  <li key={index} style={{ marginBottom: "10px" }}>
-                    <div><strong>入學學年度：</strong>{student.入學學年度}</div>
-                    <div><strong>學生姓名：</strong>{student.學生姓名}</div>
-                    <div><strong>論文題目：</strong>{student.論文題目}</div>
-                  </li>
+                  <div 
+                    key={index} 
+                    style={{ 
+                      marginBottom: "16px", 
+                      padding: "12px",
+                      backgroundColor: "#ffffff",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "6px",
+                      borderLeft: "4px solid #0d9488"
+                    }}
+                  >
+                    <div style={{ marginBottom: "6px" }}>
+                      <strong style={{ color: "#1e3a8a" }}>學生：</strong>
+                      <span style={{ fontSize: "16px", fontWeight: "500" }}>{student.學生姓名}</span>
+                      {student.入學學年度 && (
+                        <span style={{ 
+                          marginLeft: "12px", 
+                          color: "#6b7280", 
+                          fontSize: "14px",
+                          backgroundColor: "#f3f4f6",
+                          padding: "2px 8px",
+                          borderRadius: "4px"
+                        }}>
+                          {student.入學學年度}
+                        </span>
+                      )}
+                    </div>
+                    {student.論文題目 && (
+                      <div style={{ 
+                        color: "#374151", 
+                        fontSize: "15px", 
+                        lineHeight: "1.5",
+                        fontStyle: "italic"
+                      }}>
+                        <strong>論文題目：</strong>{student.論文題目}
+                      </div>
+                    )}
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : (
-              <p style={{ color: "#999" }}>無學生資料</p>
+              <p style={{ color: "#999" }}>無指導學生資料</p>
             )}
 
             <div style={{ margin: "18px 0 10px 0", fontWeight: "bold", color: "#0d9488", fontSize: "20px" }}>產學合作資料</div>
