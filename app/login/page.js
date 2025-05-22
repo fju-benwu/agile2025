@@ -15,7 +15,7 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       setMessage("✅ 登入成功！");
       window.alert("✅ 登入成功！");
-      window.location.href = "/intro"; // 使用瀏覽器重新導向
+      window.location.href = "/agile2025/intro"; // 使用瀏覽器重新導向
     } catch (error) {
       setMessage(`❌ 登入失敗：${error.message}`);
       window.alert(`❌ 登入失敗：${error.message}`);
@@ -35,7 +35,7 @@ export default function LoginPage() {
       setMessage("✅ 註冊成功，將自動導向主頁。");
       window.alert("✅ 註冊成功，將自動導向主頁。");
       setShowRegister(false);
-      window.location.href = "/rules2"; // 使用瀏覽器重新導向
+      window.location.href = "/agile2025/rules2"; // 使用瀏覽器重新導向
     } catch (error) {
       setMessage(`❌ 註冊失敗：${error.message}`);
       window.alert(`❌ 註冊失敗：${error.message}`);
