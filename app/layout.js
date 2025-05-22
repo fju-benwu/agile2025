@@ -407,11 +407,21 @@ export default function RootLayout({ children }) {
               <a 
                 href="https://www.instagram.com/fjcuim/" 
                 target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ textDecoration: "none", color: "#fff", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "6px" }}
+                rel="noopener noreferrer"
+                style={{ 
+                  display: "inline-flex", 
+                  alignItems: "center", 
+                  gap: "8px", 
+                  marginTop: "6px", 
+                  textDecoration: "none" 
+                }}
               >
-                <i className="fab fa-instagram" style={{ fontSize: "18px" }}></i>
-                <span>追蹤我們的 IG</span>
+                <img 
+                  src="/assets/instagram-icon.png"  // 請根據實際放置路徑修改
+                  alt="Instagram" 
+                  style={{ width: "28px", height: "28px" }} 
+                />
+                <span style={{ color: "#EEBE5C", fontWeight: "bold" }}>追蹤我們的 IG</span>
               </a>
             </div>
             <div className="footer-section">
