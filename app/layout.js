@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/app/_firebase/FirebaseConfig";
-import { useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/app/_firebase/FirebaseConfig";
 
@@ -24,7 +23,7 @@ export default function RootLayout({ children }) {
   const [userName, setUserName] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef(null);
-  const router = useRouter();
+  //const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -56,7 +55,7 @@ export default function RootLayout({ children }) {
   const handleLogout = async () => {
     await signOut(auth);
     window.alert("已成功登出！");
-    router.push("/login");
+    window.location.href = "/login";
   };
 
   const toggleMobileMenu = () => {
