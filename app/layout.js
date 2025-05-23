@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation"; // 引入 useRouter
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/app/_firebase/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
@@ -23,9 +24,14 @@ export default function RootLayout({ children }) {
   const [userName, setUserName] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef(null);
-  //const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
+    // 確保只在客戶端執行
+    if (typeof window !== "undefined" && window.location.pathname === "/") {
+      router.push("/intro");
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
@@ -50,7 +56,7 @@ export default function RootLayout({ children }) {
       unsubscribe();
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [router]);
 
   const handleLogout = async () => {
     await signOut(auth);
