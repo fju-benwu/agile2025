@@ -5,8 +5,11 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "export": "next export",
+    "deploy": "next build && next export && gh-pages -d out",
     "start": "next start",
     "lint": "next lint",
+    "test": "npx mocha test/**/*.spec.js --timeout 90000",
     "moveFirestore": "node scripts/moveFirestore.js"
   },
   "dependencies": {
@@ -18,11 +21,13 @@
     "react-dom": "^19.0.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^7.5.2",
+    "selenium-webdriver": "^4.32.0",
     "xlsx": "^0.18.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "eslint": "^9",
-    "eslint-config-next": "15.2.2"
+    "eslint-config-next": "15.2.2",
+    "gh-pages": "^6.3.0"
   }
 }

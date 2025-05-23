@@ -189,6 +189,19 @@ opacity: 1;
 transform: translateY(0);
 }
 
+/* --- 修復部分頁面覆蓋 footer 樣式問題 --- */
+footer {
+  background-color: #004080 !important;
+  color: white !important;
+}
 
+footer .footer-section {
+  border-right: 1px solid white !important;
+}
+
+footer .footer-heading,
+footer .footer-info {
+  color: white !important;
+}
 
 

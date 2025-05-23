@@ -1,5 +1,10 @@
+const isProd = process.env.NODE_ENV === 'production';
+
 module.exports = {
-    images: {
-        domains: ['www.im.fju.edu.tw'], // 允許的圖片來源域名
-    },
+  basePath: isProd ? '/agile2025' : '',
+  assetPrefix: isProd ? '/agile2025' : '',
+  images: {
+    domains: ['www.im.fju.edu.tw'],
+    unoptimized: true,
+  },
 };

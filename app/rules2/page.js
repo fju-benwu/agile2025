@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Added for auth
 import app from "@/app/_firebase/Config";
 import confetti from "canvas-confetti";
 import * as XLSX from "xlsx";
@@ -35,12 +36,141 @@ export default function RulesPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [uploadFileInput, setUploadFileInput] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null); // Added state for user authentication
   const fireworkTimeout = useRef(null);
 
   // 設定固定的學年度選項
   const initializeAvailableYears = () => {
     const years = ["114", "113"]; // 固定的學年度選項
     setAvailableYears(years);
+  };
+
+  // 檢查用戶認證狀態
+  useEffect(() => {
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setCurrentUser(user);
+      if (user) {
+        // 用戶已登入，載入其已保存的資料
+        loadUserData(user.uid);
+        // 檢查用戶是否為管理員
+        await checkAdminStatus(user.uid);
+      } else {
+        // 用戶登出時重置管理員狀態
+        setAdminMode(false);
+      }
+    });
+    
+    // 清除訂閱
+    return () => unsubscribe();
+  }, []);
+
+  // 檢查用戶是否為管理員
+  const checkAdminStatus = async (userId) => {
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnap = await getDoc(userDocRef);
+      
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const isAdmin = userData.role === "admin";
+        setAdminMode(isAdmin);
+        console.log("用戶角色:", userData.role, "是否為管理員:", isAdmin);
+      } else {
+        setAdminMode(false);
+        console.log("用戶文檔不存在，設置為非管理員");
+      }
+    } catch (error) {
+      console.error("檢查管理員狀態時出錯:", error);
+      setAdminMode(false);
+    }
+  };
+  const loadUserData = async (userId) => {
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnap = await getDoc(userDocRef);
+      
+      if (userDocSnap.exists() && userDocSnap.data().courseSelections) {
+        const userData = userDocSnap.data().courseSelections;
+        // 只有在有實際數據時更新
+        if (userData.checked && Object.keys(userData.checked).length > 0) {
+          setChecked(userData.checked || {});
+          setStudentType(userData.studentType || "regular");
+          setTrack(userData.track || "ai");
+          setAcademicYear(userData.academicYear || "113");
+        }
+      } else {
+        // 如果沒有用戶數據，則使用本地存儲數據
+        const saved = localStorage.getItem("masterCourseRequirementState");
+        if (saved) {
+          const savedState = JSON.parse(saved);
+          setChecked(savedState.checked || {});
+          setStudentType(savedState.studentType || "regular");
+          setTrack(savedState.track || "ai");
+          setAcademicYear(savedState.academicYear || "113");
+        }
+      }
+    } catch (error) {
+      console.error("讀取使用者資料時發生錯誤:", error);
+    }
+  };
+
+  // 儲存用戶數據到 Firestore
+  const saveUserData = async () => {
+    if (!currentUser) {
+      alert("請先登入以儲存您的選課資料！");
+      // 重導向到登入頁面
+      window.location.href = "/agile2025/login"; // 請替換為您的實際登入頁面路徑
+      return;
+    }
+    
+    try {
+      const userDocRef = doc(db, "users", currentUser.uid);
+      
+      // 首先檢查用戶文檔是否已存在
+      const docSnap = await getDoc(userDocRef);
+      
+      if (docSnap.exists()) {
+        // 更新現有文檔與課程選擇
+        await updateDoc(userDocRef, {
+          courseSelections: {
+            checked,
+            studentType,
+            track,
+            academicYear,
+            lastUpdated: new Date().toISOString()
+          }
+        });
+      } else {
+        // 創建新的用戶文檔
+        await setDoc(userDocRef, {
+          email: currentUser.email,
+          name: currentUser.displayName || "",
+          role: "user", // 默認角色
+          createdAt: new Date().toISOString(),
+          courseSelections: {
+            checked,
+            studentType,
+            track,
+            academicYear,
+            lastUpdated: new Date().toISOString()
+          }
+        });
+      }
+      
+      // 同時保存到本地儲存作為備份
+      localStorage.setItem("masterCourseRequirementState", JSON.stringify({
+        checked,
+        studentType,
+        track,
+        academicYear
+      }));
+      
+      alert("已儲存選課資料至您的個人資料！");
+    } catch (error) {
+      console.error("儲存資料時發生錯誤:", error);
+      alert("儲存資料時發生錯誤: " + error.message);
+    }
   };
 
   // 從 Firestore 讀取修業規則資料
@@ -502,25 +632,29 @@ export default function RulesPage() {
 
   // 組件載入時載入 localStorage 和可用學年度
   useEffect(() => {
-    // 載入 localStorage
-    const saved = localStorage.getItem("masterCourseRequirementState");
-    if (saved) {
-      const savedState = JSON.parse(saved);
-      setChecked(savedState.checked || {});
-      setStudentType(savedState.studentType || "regular");
-      setTrack(savedState.track || "ai");
-      setAcademicYear(savedState.academicYear || "113");
-    }
-    
     // 載入可用的學年度列表
     initializeAvailableYears();
-  }, []);
+    
+    // 如果未登入，才從 localStorage 載入
+    // 如果登入狀態，會在 onAuthStateChanged 回調中載入用戶特定數據
+    if (!currentUser) {
+      // 載入 localStorage
+      const saved = localStorage.getItem("masterCourseRequirementState");
+      if (saved) {
+        const savedState = JSON.parse(saved);
+        setChecked(savedState.checked || {});
+        setStudentType(savedState.studentType || "regular");
+        setTrack(savedState.track || "ai");
+        setAcademicYear(savedState.academicYear || "113");
+      }
+    }
+  }, [currentUser]);  // 添加 currentUser 作為依賴
 
   useEffect(() => {
     if (requirementsData && !loading && academicYear && studentType) {
       updateRequirementsBasedOnSelection();
       
-      // 儲存 localStorage
+      // 本機儲存作為備份
       localStorage.setItem("masterCourseRequirementState", JSON.stringify({
         checked,
         studentType,
@@ -538,6 +672,7 @@ export default function RulesPage() {
   }
 
   function updateProgress() {
+    // 此處保持原函數內容不變
     if (!requirements) return;
 
     const categories = requirements.categories;
@@ -690,6 +825,7 @@ export default function RulesPage() {
   }
 
   function calculateProgress() {
+    // 此處保持原函數內容不變
     if (!requirements) return;
 
     let result = [];
@@ -1300,6 +1436,23 @@ export default function RulesPage() {
           transform: translateY(-1px);
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        /* 登入狀態顯示 */
+        .user-status {
+          background-color: #f8f9fa;
+          padding: 10px;
+          border-radius: 6px;
+          margin-top: 15px;
+          font-size: 14px;
+          border: 1px solid #e9ecef;
+        }
+        .user-status.logged-in {
+          background-color: #e8f7f3;
+          border-color: #27ae60;
+        }
+        .user-status.logged-out {
+          background-color: #fff5f5;
+          border-color: #fed7d7;
+        }
         @media (max-width: 768px) {
           .main-layout {
             flex-direction: column;
@@ -1311,6 +1464,18 @@ export default function RulesPage() {
           .modal-content {
             margin: 20px;
             width: calc(100% - 40px);
+          }
+          /* 手機版本按鈕調整 */
+          .container h2 {
+            margin-right: 0 !important;
+            margin-bottom: 60px;
+          }
+          .container .action-buttons {
+            position: relative !important;
+            top: auto !important;
+            right: auto !important;
+            margin-bottom: 15px;
+            justify-content: flex-start;
           }
         }
       `}</style>
@@ -1341,27 +1506,67 @@ export default function RulesPage() {
           {/* 修課進度 */}
           {requirements && !loading && (
             <div className="container" style={{ position: "relative" }}>
-              {/* 右上角重置按鈕 */}
-              <button
-                style={{
-                  position: "absolute",
-                  top: 16,
-                  right: 16,
-                  zIndex: 2,
-                  background: "#e74c3c",
-                  color: "white",
-                  fontWeight: "bold"
-                }}
-                onClick={() => {
-                  if (confirm("確定要清除所有選擇的課程嗎？")) {
-                    setChecked({});
-                    setShowResult(false);
-                  }
-                }}
-              >
-                重置所有選擇
-              </button>
-              <h2>您的修課進度 - {requirements?.name}</h2>
+              <h2 style={{ marginRight: 240 }}>您的修課進度 - {requirements?.name}</h2>
+              
+              {/* 右上角重置與儲存按鈕 */}
+              <div className="action-buttons" style={{ position: "absolute", top: 20, right: 20, zIndex: 2, display: "flex", gap: 8 }}>
+                <button
+                  style={{
+                    background: "#e74c3c",
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    padding: "8px 16px"
+                  }}
+                  onClick={() => {
+                    if (confirm("確定要清除所有選擇的課程嗎？")) {
+                      setChecked({});
+                      setShowResult(false);
+                    }
+                  }}
+                >
+                  重置所有選擇
+                </button>
+                <button
+                  style={{
+                    background: "#27ae60",
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    padding: "8px 16px"
+                  }}
+                  onClick={saveUserData}
+                >
+                  儲存
+                </button>
+              </div>
+              
+              {/* 顯示用戶登入狀態 */}
+              <div className={`user-status ${currentUser ? "logged-in" : "logged-out"}`}>
+                {currentUser ? (
+                  <div>
+                    <strong>當前登入用戶:</strong> {currentUser.displayName || currentUser.email}
+                    {adminMode && (
+                      <span style={{ 
+                        marginLeft: 10, 
+                        backgroundColor: "#e67e22", 
+                        color: "white", 
+                        padding: "2px 8px", 
+                        borderRadius: "4px", 
+                        fontSize: "12px",
+                        fontWeight: "bold"
+                      }}>
+                        管理員
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <strong>未登入狀態</strong> - 請登入以儲存您的選課資料至個人帳戶
+                  </div>
+                )}
+              </div>
+              
               <div className="progress-container">
                 <div className="progress-bar"></div>
               </div>
@@ -1645,24 +1850,20 @@ export default function RulesPage() {
               </div>
             )}
 
-            {/* 管理者模式開關 */}
-            <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 8 }}>
-              <input
-                type="checkbox"
-                id="admin-mode-toggle"
-                checked={adminMode}
-                onChange={e => setAdminMode(e.target.checked)}
-                style={{ width: 18, height: 18, accentColor: "#e67e22", cursor: "pointer" }}
-              />
-              <label htmlFor="admin-mode-toggle" style={{ fontWeight: "bold", color: adminMode ? "#e67e22" : "#555", cursor: "pointer" }}>
-                管理者模式 {adminMode ? "（開啟）" : "（關閉）"}
-              </label>
-            </div>
-
-            {/* 管理者功能 */}
-            {adminMode && (
+            {/* 管理者功能區塊 - 只有管理員才顯示 */}
+            {adminMode && currentUser && (
               <div style={{ marginTop: 20, padding: 15, backgroundColor: "#fff3cd", borderRadius: 8, border: "1px solid #ffeaa7" }}>
-                <h4 style={{ margin: "0 0 15px 0", color: "#e67e22" }}>管理者功能</h4>
+                <h4 style={{ margin: "0 0 15px 0", color: "#e67e22" }}>
+                  🔧 管理者功能
+                  <span style={{ 
+                    marginLeft: 10, 
+                    fontSize: "12px", 
+                    color: "#666",
+                    fontWeight: "normal"
+                  }}>
+                    (僅管理員可見)
+                  </span>
+                </h4>
                 
                 {/* 下載模板 */}
                 <div style={{ marginBottom: 15 }}>
