@@ -182,14 +182,14 @@ export default function ConsolidatedTeacherPage() {
   }
 
   if (loading) {
-    return <div style={{ textAlign: "center", padding: "40px", fontFamily: "標楷體, serif", fontSize: "20px" }}>載入教師資料中...</div>;
+    return <div style={{ textAlign: "center", padding: "40px", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif", fontSize: "20px" }}>載入教師資料中...</div>;
   }
 
   // Render teacher list when no teacher is selected
   if (!selectedTeacher) {
     return (
-      <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-        <h1 className="heading" style={{ fontSize: "32px", textAlign: "center", margin: "20px 0", color: "#1e3a8a", fontFamily: "標楷體, serif" }}>系所教師</h1>
+      <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif" }}>
+        <h1 className="heading" style={{ fontSize: "32px", textAlign: "center", margin: "20px 0", color: "#1e3a8a", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif" }}>系所教師</h1>
         
         {/* Filter buttons */}
         <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
@@ -201,7 +201,7 @@ export default function ConsolidatedTeacherPage() {
               borderRadius: "4px", 
               backgroundColor: activeFilter === "專任教師" ? "#1e3a8a" : "#e5e7eb", 
               color: activeFilter === "專任教師" ? "white" : "#4b5563", 
-              fontFamily: "標楷體, serif",
+              fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
               fontSize: "16px",
               cursor: "pointer",
               fontWeight: "bold"
@@ -218,7 +218,7 @@ export default function ConsolidatedTeacherPage() {
               borderRadius: "4px", 
               backgroundColor: activeFilter === "兼任教師" ? "#1e3a8a" : "#e5e7eb", 
               color: activeFilter === "兼任教師" ? "white" : "#4b5563", 
-              fontFamily: "標楷體, serif",
+              fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
               fontSize: "16px",
               cursor: "pointer",
               fontWeight: "bold"
@@ -245,7 +245,8 @@ export default function ConsolidatedTeacherPage() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                textAlign: "center"
+                textAlign: "center",
+                fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
               }}
               onClick={() => handleTeacherSelect(teacher.姓名)}
               onMouseOver={(e) => {
@@ -279,13 +280,13 @@ export default function ConsolidatedTeacherPage() {
                 fontSize: "20px", 
                 marginBottom: "4px", 
                 color: "#1e3a8a", 
-                fontFamily: "標楷體, serif" 
+                fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif" 
               }}>
                 {teacher.姓名}
               </h2>
               <p className="position" style={{ 
                 color: "#0d9488", 
-                fontFamily: "標楷體, serif",
+                fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
                 fontSize: "14px",
                 margin: "0 0 8px 0"
               }}>
@@ -301,7 +302,7 @@ export default function ConsolidatedTeacherPage() {
   // Show loading state while fetching teacher data
   if (loadingTeacherData) {
     return (
-      <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+      <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif" }}>
         <button 
           onClick={handleBackToList}
           style={{
@@ -312,20 +313,20 @@ export default function ConsolidatedTeacherPage() {
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
-            fontFamily: "標楷體, serif",
+            fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
             fontSize: "16px"
           }}
         >
           ← 返回教師列表
         </button>
-        <div style={{ textAlign: "center", padding: "40px", fontFamily: "標楷體, serif", fontSize: "20px" }}>載入{selectedTeacher}的詳細資料中...</div>
+        <div style={{ textAlign: "center", padding: "40px", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif", fontSize: "20px" }}>載入{selectedTeacher}的詳細資料中...</div>
       </div>
     );
   }
 
   // Render teacher details when a teacher is selected
   return (
-    <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+    <div className="container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif" }}>
       <button 
         onClick={handleBackToList}
         style={{
@@ -336,7 +337,7 @@ export default function ConsolidatedTeacherPage() {
           border: "none",
           borderRadius: "4px",
           cursor: "pointer",
-          fontFamily: "標楷體, serif",
+          fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
           fontSize: "16px"
         }}
       >
@@ -346,7 +347,7 @@ export default function ConsolidatedTeacherPage() {
       {teacherData ? (
         <div
           style={{
-            fontFamily: "標楷體, serif",
+            fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif",
             lineHeight: "1.8",
             maxWidth: "900px",
             margin: "0 auto",
@@ -361,7 +362,7 @@ export default function ConsolidatedTeacherPage() {
         >
           {/* Left side - Image area */}
           <div style={{ textAlign: "center", flex: "1" }}>
-            <h1 style={{ fontSize: "28px", marginBottom: "16px", color: "#1e3a8a", letterSpacing: "2px" }}>
+            <h1 style={{ fontSize: "28px", marginBottom: "16px", color: "#1e3a8a", letterSpacing: "2px", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif" }}>
               {teacherData.姓名}
             </h1>
             <div
@@ -392,7 +393,7 @@ export default function ConsolidatedTeacherPage() {
           </div>
 
           {/* Right side - Information area */}
-          <div style={{ flex: "2", fontSize: "18px" }}>
+          <div style={{ flex: "2", fontSize: "18px", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif" }}>
             <ul style={{ paddingLeft: "0", listStyle: "none" }}>
               <li style={{ marginBottom: "10px" }}>
                 <strong>電子郵件：</strong>
@@ -495,7 +496,7 @@ export default function ConsolidatedTeacherPage() {
           </div>
         </div>
       ) : (
-        <p style={{ textAlign: "center", color: "#999", fontFamily: "標楷體, serif", fontSize: "20px" }}>查無資料</p>
+        <p style={{ textAlign: "center", color: "#999", fontFamily: "var(--font-geist-sans), 'Noto Sans TC', 'Microsoft JhengHei', sans-serif", fontSize: "20px" }}>查無資料</p>
       )}
     </div>
   );
