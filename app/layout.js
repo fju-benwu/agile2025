@@ -416,8 +416,13 @@ export default function RootLayout({ children }) {
                   textDecoration: "none" 
                 }}
               >
-                <img 
+                {/* <img 
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/assets/instagram-icon.png`}   // 請根據實際放置路徑修改
+                  alt="Instagram" 
+                  style={{ width: "28px", height: "28px" }} 
+                /> */}
+                <img 
+                  src="https://fju-benwu.github.io/agile2025/assets/instagram-icon.png"   // 請根據實際放置路徑修改
                   alt="Instagram" 
                   style={{ width: "28px", height: "28px" }} 
                 />
