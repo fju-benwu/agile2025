@@ -28,9 +28,9 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     // 確保只在客戶端執行
-    if (typeof window !== "undefined" && window.location.pathname === "/") {
-      router.push("/intro");
-    }
+    // if (typeof window !== "undefined" && window.location.pathname === "/") {
+    //   router.push("/intro");
+    // }
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
@@ -368,7 +368,7 @@ export default function RootLayout({ children }) {
                 <Link href="/teacher" className="nav-link">
                   師資介紹
                 </Link>
-                <Link href="/" className="nav-link">
+                <Link href="/course" className="nav-link">
                   課程資訊
                 </Link>
                 <Link href="/intro" className="nav-link">
