@@ -340,7 +340,15 @@ export default function RootLayout({ children }) {
             .footer-section {
               padding: 1rem 0;
             }
-            
+            .logo-button {
+              text-decoration: none;
+              color: #fff; /* 按鈕文字顏色 */
+              cursor: pointer;
+            }
+
+            .logo-button:hover {
+              text-decoration: underline; /* 滑鼠移過時加下劃線 */
+            }
             .footer-section:not(:last-child) {
               border-right: none;
               border-bottom: 1px solid var(--text-light);
@@ -354,7 +362,9 @@ export default function RootLayout({ children }) {
           <div className="header-content">
             <div className="header-row">
               <div>
-                <h1 className="logo">輔大資管碩士新生資訊系統</h1>
+                <Link href="/intro" className="logo-button">
+                  <h1 className="logo">輔大資管碩士新生資訊系統</h1>
+                </Link>
               </div>
               <div className="hamburger" onClick={toggleMobileMenu}>
                 <span className="hamburger-line"></span>
