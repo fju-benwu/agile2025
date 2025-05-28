@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation"; // 引入 useRouter
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/app/_firebase/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
@@ -23,9 +24,14 @@ export default function RootLayout({ children }) {
   const [userName, setUserName] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef(null);
-  //const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
+    // 確保只在客戶端執行
+    // if (typeof window !== "undefined" && window.location.pathname === "/") {
+    //   router.push("/intro");
+    // }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
@@ -50,7 +56,7 @@ export default function RootLayout({ children }) {
       unsubscribe();
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [router]);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -362,7 +368,7 @@ export default function RootLayout({ children }) {
                 <Link href="/teacher" className="nav-link">
                   師資介紹
                 </Link>
-                <Link href="/" className="nav-link">
+                <Link href="/course" className="nav-link">
                   課程資訊
                 </Link>
                 <Link href="/intro" className="nav-link">
@@ -416,8 +422,13 @@ export default function RootLayout({ children }) {
                   textDecoration: "none" 
                 }}
               >
-                <img 
+                {/* <img 
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/assets/instagram-icon.png`}   // 請根據實際放置路徑修改
+                  alt="Instagram" 
+                  style={{ width: "28px", height: "28px" }} 
+                /> */}
+                <img 
+                  src="https://fju-benwu.github.io/agile2025/assets/instagram-icon.png"   // 請根據實際放置路徑修改
                   alt="Instagram" 
                   style={{ width: "28px", height: "28px" }} 
                 />
