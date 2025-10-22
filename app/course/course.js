@@ -502,12 +502,23 @@ export default function Course() {
         const teacherDoc = querySnapshot.docs[0];
         const teacherInfo = teacherDoc.data();
 
+        // 這部分改為讀取陣列
+        let allStudentData = [];
+        if (teacherInfo.thesis && Array.isArray(teacherInfo.thesis)) {
+          const thesisData = teacherInfo.thesis.map(thesis => ({
+            學生姓名: thesis.student,
+            入學學年度: thesis.year ? `${thesis.year}學年度` : '未記錄',
+            論文題目: thesis.title,
+            資料來源: 'thesis' // 標記資料來源
+          }));
+          allStudentData = [...allStudentData, ...thesisData];
+        }
         // Fetch the teacher's students subcollection
-        const studentCollection = collection(teacherDoc.ref, "student");
-        const studentSnapshot = await getDocs(studentCollection);
-        const students = studentSnapshot.docs.map((doc) => doc.data());
+        // const studentCollection = collection(teacherDoc.ref, "student");
+        // const studentSnapshot = await getDocs(studentCollection);
+        // const students = studentSnapshot.docs.map((doc) => doc.data());
 
-        setTeacherData({ ...teacherInfo, students });
+        setTeacherData({ ...teacherInfo, students:allStudentData });
       } else {
         setTeacherData(null);
       }
