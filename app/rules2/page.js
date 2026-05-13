@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, setDoc } fro
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // Added for auth
 import app from "@/app/_firebase/Config";
 import confetti from "canvas-confetti";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 // 初始化 Firestore
 const db = getFirestore(app);
@@ -302,22 +302,16 @@ export default function RulesPage() {
 
     try {
       const arrayBuffer = await file.arrayBuffer();
-      const workbook = XLSX.read(arrayBuffer, {
-        cellStyles: true,
-        cellFormulas: true,
-        cellDates: true,
-        cellNF: true,
-        sheetStubs: true
-      });
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(arrayBuffer);
 
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
+      const worksheet = workbook.worksheets[0];
       
-      // 將工作表轉換為 JSON，包含空行
-      const rawData = XLSX.utils.sheet_to_json(worksheet, { 
-        header: 1,
-        defval: '',
-        blankrows: true
+      // 將工作表轉換為陣列，包含空行
+      const rawData = [];
+      worksheet.eachRow((row) => {
+        // row.values 從 index 1 開始有值，index 0 是 undefined，所以使用 slice(1)
+        rawData.push(row.values.slice(1));
       });
 
       console.log('Raw Excel data:', rawData);
